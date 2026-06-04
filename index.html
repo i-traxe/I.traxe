@@ -116,23 +116,23 @@ nav {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 500;
-  padding: 20px 40px;
+  padding: 16px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   transition: padding 0.4s, background 0.4s;
   flex-wrap: nowrap;
-  gap: 16px;
+  gap: 8px;
 }
 nav.scrolled {
-  padding: 14px 40px;
+  padding: 12px 40px;
   background: rgba(5,5,5,0.94);
   backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--border);
 }
 .nav-logo {
   font-family: var(--font-display);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: 0.05em;
   color: var(--white);
@@ -142,15 +142,15 @@ nav.scrolled {
 }
 .nav-center {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   list-style: none;
   flex-shrink: 1;
   min-width: 0;
 }
 .nav-center a {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 400;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--gray-5);
   text-decoration: none;
@@ -159,13 +159,13 @@ nav.scrolled {
 }
 .nav-center a:hover { color: var(--white); }
 .nav-cta {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--black);
   background: var(--white);
-  padding: 10px 20px;
+  padding: 9px 16px;
   text-decoration: none;
   transition: all 0.3s;
   border-radius: 2px;
@@ -963,8 +963,7 @@ nav.scrolled {
   background: var(--black);
   border: 1px solid var(--border);
   color: var(--white);
-  padding: 16px 20px;
-  font-family: var(--font-body);
+  padding: 16px 20px; font-family: var(--font-body);
   font-size: 14px;
   font-weight: 300;
   outline: none;
