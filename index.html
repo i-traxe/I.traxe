@@ -1359,196 +1359,224 @@ footer {
     </div>
   </div>
 </section>
-<!-- ===== I.TRAXE AI CHATBOT — paste before <section id="pricing"> ===== -->
-<section id="ai-chat" class="itc-section">
-  <div class="itc-container">
-    <span class="itc-eyebrow">Ask I.TRAXE</span>
-    <h2 class="itc-heading">Chat with our <em>AI Assistant</em></h2>
-    <p class="itc-sub">Got a question about the keychain, pricing, or how it works? Ask below — instant answers, no waiting.</p>
+<!-- ===== I.TRAXE AI Assistant ===== -->
+<section id="itraxe-ai-chat" class="itx-chat-section">
+  <style>
+    .itx-chat-section {
+      padding: 80px 20px;
+      background: #0b0d10;
+      color: #f4f4f4;
+      font-family: inherit;
+    }
+    .itx-chat-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .itx-chat-eyebrow {
+      font-size: 14px;
+      color: #ff5c7a;
+      margin-bottom: 8px;
+    }
+    .itx-chat-title {
+      font-size: clamp(28px, 4vw, 40px);
+      margin: 0 0 10px;
+      font-weight: 600;
+    }
+    .itx-chat-title em { color: #ff5c7a; font-style: normal; }
+    .itx-chat-sub {
+      color: #9aa0a6;
+      margin-bottom: 32px;
+      font-size: 15px;
+    }
+    .itx-chat-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      text-align: left;
+      backdrop-filter: blur(6px);
+    }
+    .itx-chat-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+    }
+    .itx-chat-avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: #ff5c7a;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .itx-chat-header-text { line-height: 1.3; }
+    .itx-chat-header-text strong { font-size: 14px; }
+    .itx-chat-status { font-size: 12px; color: #4ade80; display: flex; align-items: center; gap: 5px; }
+    .itx-chat-status::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%;
+      background: #4ade80; display: inline-block;
+    }
+    .itx-chat-body {
+      height: 320px;
+      overflow-y: auto;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .itx-msg { max-width: 80%; font-size: 14px; line-height: 1.5; padding: 10px 13px; border-radius: 12px; }
+    .itx-msg.bot { align-self: flex-start; background: rgba(255,255,255,0.06); border-bottom-left-radius: 3px; }
+    .itx-msg.user { align-self: flex-end; background: #ff5c7a; color: #14151a; border-bottom-right-radius: 3px; }
+    .itx-chat-quick { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 18px 14px; }
+    .itx-chip {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #f4f4f4;
+      font-size: 12.5px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .itx-chip:hover { background: rgba(255,255,255,0.12); }
+    .itx-chat-inputrow {
+      display: flex;
+      gap: 8px;
+      padding: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .itx-chat-inputrow input {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: #fff;
+      padding: 11px 13px;
+      font-size: 14px;
+      outline: none;
+    }
+    .itx-chat-inputrow input:focus { border-color: #ff5c7a; }
+    .itx-chat-inputrow button {
+      background: #ff5c7a;
+      color: #14151a;
+      border: none;
+      border-radius: 10px;
+      padding: 0 18px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .itx-chat-body::-webkit-scrollbar { width: 6px; }
+    .itx-chat-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+  </style>
 
-    <div class="itc-widget">
-      <div class="itc-header">
-        <span class="itc-avatar">🐼</span>
-        <div>
-          <div class="itc-title">I.TRAXE Assistant</div>
-          <div class="itc-status"><span class="itc-dot"></span>Online</div>
+  <div class="itx-chat-wrap">
+    <div class="itx-chat-eyebrow">Ask I.TRAXE</div>
+    <h2 class="itx-chat-title">Got questions? <em>Ask instantly.</em></h2>
+    <p class="itx-chat-sub">Our assistant can answer common questions about I.TRAXE right now.</p>
+
+    <div class="itx-chat-card">
+      <div class="itx-chat-header">
+        <div class="itx-chat-avatar">🐼</div>
+        <div class="itx-chat-header-text">
+          <div><strong>I.TRAXE Assistant</strong></div>
+          <div class="itx-chat-status">Online</div>
         </div>
       </div>
 
-      <div class="itc-window" id="itcWindow">
-        <div class="itc-msg itc-bot">
-          Hi! I'm the I.TRAXE assistant 🐼 Ask me anything about the safety keychain — pricing, battery, indoor use, SIMs, or how SOS works.
-        </div>
+      <div class="itx-chat-body" id="itxChatBody">
+        <div class="itx-msg bot">Hi! I'm the I.TRAXE assistant 🐼 Ask me about battery life, indoor use, pricing, SIM cards, or setup — or tap a question below.</div>
       </div>
 
-      <div class="itc-chips" id="itcChips">
-        <button class="itc-chip" data-q="What is the price?">💰 Price?</button>
-        <button class="itc-chip" data-q="Does it work indoors?">🏠 Works indoors?</button>
-        <button class="itc-chip" data-q="How does the SOS work?">🔴 How does SOS work?</button>
-        <button class="itc-chip" data-q="Is there a subscription?">🔁 Subscription?</button>
+      <div class="itx-chat-quick">
+        <button class="itx-chip" data-q="price">Price?</button>
+        <button class="itx-chip" data-q="indoor">Works indoors?</button>
+        <button class="itx-chip" data-q="battery">Battery life?</button>
+        <button class="itx-chip" data-q="sim">Which SIMs work?</button>
+        <button class="itx-chip" data-q="setup">How do I set it up?</button>
       </div>
 
-      <form class="itc-input-row" id="itcForm">
-        <input type="text" id="itcInput" placeholder="Type your question..." autocomplete="off" />
-        <button type="submit" id="itcSend" aria-label="Send">➤</button>
-      </form>
+      <div class="itx-chat-inputrow">
+        <input type="text" id="itxChatInput" placeholder="Type your question..." />
+        <button id="itxChatSend">Send</button>
+      </div>
     </div>
   </div>
+
+  <script>
+    (function () {
+      const body = document.getElementById('itxChatBody');
+      const input = document.getElementById('itxChatInput');
+      const sendBtn = document.getElementById('itxChatSend');
+      const chips = document.querySelectorAll('.itx-chip');
+      const whatsappLink = "https://wa.me/918073067935?text=Hi%20I.TRAXE%2C%20I%20have%20a%20question%20about%20the%20safety%20keychain.";
+
+      const faq = [
+        { keys: ['price', 'cost', 'how much', '4499', 'rupee'], a: "I.TRAXE Safety Keychain is ₹4,499 — a one-time purchase, no subscription. Only ongoing cost is a regular SIM plan (₹99–199/month)." },
+        { keys: ['indoor', 'inside', 'home', 'office'], a: "Yes! I.TRAXE works indoors too. It uses GPS outdoors for pinpoint accuracy, and cell tower triangulation indoors so your location is always sent." },
+        { keys: ['battery', 'charge', 'charging', 'backup'], a: "The 2500mAh battery gives up to 24 hours standby, and charges fully via USB-C in about 3-4 hours." },
+        { keys: ['sim', 'network', 'jio', 'airtel', 'vi', 'bsnl'], a: "Any 4G SIM works — Airtel, Jio, Vi, or BSNL. Just insert a nano SIM and you're ready. SIM card isn't included with the device." },
+        { keys: ['setup', 'install', 'configure', 'start'], a: "Setup is simple: insert your SIM, charge the device, and configure your trusted contact number. We provide full setup support via WhatsApp and email." },
+        { keys: ['app', 'internet', 'wifi'], a: "No app and no internet needed. I.TRAXE runs on the GSM network directly — even a basic keypad phone can receive the SOS alert." },
+        { keys: ['sos', 'button', 'press', 'alert'], a: "One press of the hidden SOS button instantly sends your live GPS location via SMS (Google Maps link) to your trusted contact. No phone unlocking needed." },
+        { keys: ['delivery', 'ship', 'order'], a: "You can place your order directly on WhatsApp and we'll confirm availability and delivery details with you." },
+        { keys: ['hello', 'hi', 'hey'], a: "Hey there! 👋 Ask me anything about I.TRAXE — pricing, battery, setup, or how the SOS works." }
+      ];
+
+      function addMsg(text, who) {
+        const div = document.createElement('div');
+        div.className = 'itx-msg ' + who;
+        div.textContent = text;
+        body.appendChild(div);
+        body.scrollTop = body.scrollHeight;
+      }
+
+      function getReply(text) {
+        const lower = text.toLowerCase();
+        for (const item of faq) {
+          if (item.keys.some(k => lower.includes(k))) return item.a;
+        }
+        return "I don't have an exact answer for that yet — but our team will! Chat with us directly on WhatsApp: " + whatsappLink;
+      }
+
+      function handleSend(text) {
+        if (!text.trim()) return;
+        addMsg(text, 'user');
+        setTimeout(() => addMsg(getReply(text), 'bot'), 400);
+      }
+
+      sendBtn.addEventListener('click', () => {
+        handleSend(input.value);
+        input.value = '';
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          handleSend(input.value);
+          input.value = '';
+        }
+      });
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          const map = {
+            price: "What's the price?",
+            indoor: "Does it work indoors?",
+            battery: "How long is the battery life?",
+            sim: "Which SIM cards work?",
+            setup: "How do I set it up?"
+          };
+          handleSend(map[chip.dataset.q]);
+        });
+      });
+    })();
+  </script>
 </section>
-
-<style>
-  #ai-chat.itc-section{
-    padding:80px 24px;
-    background:#0b0b0d;
-    color:#f5f5f5;
-    font-family:inherit;
-  }
-  .itc-container{max-width:720px;margin:0 auto;text-align:center;}
-  .itc-eyebrow{
-    display:inline-block;font-size:13px;letter-spacing:.08em;text-transform:uppercase;
-    color:#ff4d4d;font-weight:600;margin-bottom:12px;
-  }
-  .itc-heading{font-size:clamp(28px,4vw,40px);font-weight:700;margin:0 0 12px;color:#fff;}
-  .itc-heading em{font-style:normal;color:#ff4d4d;}
-  .itc-sub{color:#a3a3a3;font-size:16px;margin:0 0 40px;line-height:1.5;}
-
-  .itc-widget{
-    text-align:left;background:#151517;border:1px solid #2a2a2e;border-radius:20px;
-    overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);
-  }
-  .itc-header{
-    display:flex;align-items:center;gap:12px;padding:16px 20px;
-    background:#1c1c1f;border-bottom:1px solid #2a2a2e;
-  }
-  .itc-avatar{
-    width:40px;height:40px;border-radius:50%;background:#232326;
-    display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
-  }
-  .itc-title{font-weight:600;color:#fff;font-size:15px;}
-  .itc-status{font-size:12px;color:#8f8f96;display:flex;align-items:center;gap:6px;}
-  .itc-dot{width:7px;height:7px;border-radius:50%;background:#39d353;display:inline-block;}
-
-  .itc-window{
-    height:320px;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;
-  }
-  .itc-msg{
-    max-width:80%;padding:11px 15px;border-radius:14px;font-size:14.5px;line-height:1.5;
-    animation:itc-fade .25s ease;
-  }
-  @keyframes itc-fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
-  .itc-bot{
-    background:#232326;color:#eaeaea;align-self:flex-start;border-bottom-left-radius:4px;
-  }
-  .itc-user{
-    background:#ff4d4d;color:#fff;align-self:flex-end;border-bottom-right-radius:4px;
-  }
-  .itc-msg a{color:#ff8080;font-weight:600;}
-  .itc-bot.itc-typing{display:flex;gap:4px;align-items:center;padding:14px 16px;}
-  .itc-typing span{width:6px;height:6px;background:#8f8f96;border-radius:50%;animation:itc-blink 1.2s infinite;}
-  .itc-typing span:nth-child(2){animation-delay:.2s;}
-  .itc-typing span:nth-child(3){animation-delay:.4s;}
-  @keyframes itc-blink{0%,80%,100%{opacity:.3;}40%{opacity:1;}}
-
-  .itc-chips{
-    display:flex;flex-wrap:wrap;gap:8px;padding:0 20px 16px;
-  }
-  .itc-chip{
-    background:#1c1c1f;border:1px solid #2e2e32;color:#d4d4d4;font-size:13px;
-    padding:8px 13px;border-radius:20px;cursor:pointer;transition:.2s;white-space:nowrap;
-  }
-  .itc-chip:hover{background:#ff4d4d;border-color:#ff4d4d;color:#fff;}
-
-  .itc-input-row{
-    display:flex;gap:10px;padding:16px 20px;border-top:1px solid #2a2a2e;background:#151517;
-  }
-  .itc-input-row input{
-    flex:1;background:#1c1c1f;border:1px solid #2e2e32;color:#fff;padding:12px 16px;
-    border-radius:24px;font-size:14.5px;outline:none;transition:.2s;
-  }
-  .itc-input-row input:focus{border-color:#ff4d4d;}
-  .itc-input-row button{
-    width:44px;height:44px;border-radius:50%;border:none;background:#ff4d4d;color:#fff;
-    font-size:18px;cursor:pointer;flex-shrink:0;transition:.2s;
-  }
-  .itc-input-row button:hover{background:#e63e3e;transform:scale(1.05);}
-
-  @media (max-width:600px){
-    .itc-window{height:280px;}
-    .itc-msg{max-width:88%;}
-  }
-</style>
-
-<script>
-(function(){
-  const KB = [
-    { k: ["price","cost","how much","₹","rupee"], a: "I.TRAXE costs ₹4,499 — a one-time purchase, no subscription ever. SIM card isn't included, but it works with any 4G SIM (Airtel, Jio, Vi, BSNL)." },
-    { k: ["indoor","inside","home","office","wall"], a: "Yes! I.TRAXE uses dual-layer location — precise GPS outdoors, and cell tower triangulation indoors — so your location is always sent when SOS is pressed." },
-    { k: ["sos","press","button","how does it work","how it works","trigger"], a: "Just one press of the hidden SOS button. It captures your GPS location instantly and sends a Google Maps link via SMS to your trusted contact — no app, no unlocking, no internet needed." },
-    { k: ["subscription","monthly","recurring","fee"], a: "Never. I.TRAXE is ₹4,499 once. The only ongoing cost is your regular SIM plan (₹99–199/month), same as any phone." },
-    { k: ["battery","charge","charging","backup","standby"], a: "The 2500mAh Li-Po battery gives up to 24 hours of standby, and charges fully via USB-C in about 3–4 hours." },
-    { k: ["sim","carrier","airtel","jio","vi","bsnl","network"], a: "All 4G SIM cards work — Airtel, Jio, Vi, BSNL. Just insert a nano SIM and you're ready to go." },
-    { k: ["receiver","phone needed","smartphone","basic phone","keypad"], a: "No smartphone needed on the receiving end. The alert is a plain SMS with a Google Maps link — even a basic ₹500 keypad phone can receive it." },
-    { k: ["app","internet","wifi","download"], a: "I.TRAXE needs zero app and zero internet. It runs entirely on the GSM network — press SOS and it just works." },
-    { k: ["setup","install","configure"], a: "Setup takes a few minutes: insert your SIM, charge the device, and configure your trusted contact number. Full support is provided over WhatsApp and email." },
-    { k: ["order","buy","purchase","get it"], a: "You can order directly on WhatsApp — just tap 'Order Now' anywhere on this page and we'll confirm availability and delivery with you." },
-    { k: ["design","look","panda","discreet"], a: "It's disguised as a cute panda keychain — nobody can tell it's a safety device, which is exactly the point." },
-    { k: ["hi","hello","hey"], a: "Hey there! 👋 Ask me about pricing, how the SOS works, battery life, or anything else about I.TRAXE." }
-  ];
-
-  const FALLBACK = 'I don\'t have an answer to that just yet — for anything specific, chat with us directly on <a href="https://wa.me/918073067935" target="_blank" rel="noopener">WhatsApp</a> and we\'ll help right away.';
-
-  function findAnswer(q){
-    const text = q.toLowerCase();
-    for (const item of KB) {
-      if (item.k.some(kw => text.includes(kw))) return item.a;
-    }
-    return FALLBACK;
-  }
-
-  const win = document.getElementById('itcWindow');
-  const form = document.getElementById('itcForm');
-  const input = document.getElementById('itcInput');
-  const chips = document.getElementById('itcChips');
-
-  function addMsg(text, who){
-    const div = document.createElement('div');
-    div.className = 'itc-msg ' + (who === 'user' ? 'itc-user' : 'itc-bot');
-    div.innerHTML = text;
-    win.appendChild(div);
-    win.scrollTop = win.scrollHeight;
-    return div;
-  }
-
-  function respond(q){
-    addMsg(q, 'user');
-    const typing = document.createElement('div');
-    typing.className = 'itc-msg itc-bot itc-typing';
-    typing.innerHTML = '<span></span><span></span><span></span>';
-    win.appendChild(typing);
-    win.scrollTop = win.scrollHeight;
-
-    setTimeout(() => {
-      typing.remove();
-      addMsg(findAnswer(q), 'bot');
-    }, 550 + Math.random() * 400);
-  }
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    const q = input.value.trim();
-    if (!q) return;
-    respond(q);
-    input.value = '';
-  });
-
-  chips.addEventListener('click', function(e){
-8    const btn = e.target.closest('.itc-chip');
-    if (!btn) return;
-    respond(btn.dataset.q);
-  });
-})();
-</script>
-<!-- ===== END I.TRAXE AI CHATBOT ===== -->
+<!-- ===== End I.TRAXE AI Assistant ===== -->
 <!-- PRICING -->
 <section class="section" id="pricing">
   <div class="section-inner">
