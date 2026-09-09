@@ -714,7 +714,7 @@ nav.scrolled {
 
 /* ── STATS ── */
 .stats-section {
-  padding: 0;
+  padding: 2;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   border-top: 1px solid var(--border);
@@ -742,144 +742,7 @@ nav.scrolled {
   text-transform: uppercase;
   color: var(--gray-4);
 }
-/**
- * I.TRAXE ASSISTANT — SERVERLESS PROXY (OPTIONAL, REAL-AI UPGRADE)
- * ------------------------------------------------------------------
- * Deploy this on Cloudflare Workers (free tier: 100k requests/day).
- * It keeps your Anthropic API key off the public website and lets
- * the chat widget get genuine model-generated answers, grounded in
- * I.TRAXE's own facts via the system prompt below.
- *
- * SETUP
- * 1. Create a free account at https://dash.cloudflare.com
- * 2. Workers & Pages → Create → "Create Worker" → paste this file in.
- * 3. Settings → Variables → add a secret: ANTHROPIC_API_KEY
- *    (get a key at https://console.anthropic.com — this is a paid
- *    API, priced per request; the free KB-only mode in the widget
- *    costs nothing if you'd rather skip this step).
- * 4. Deploy. Copy the worker URL (e.g. https://itraxe-assistant.
- *    yourname.workers.dev) into AI_ENDPOINT in the widget's <script>.
- * 5. Settings → Triggers → Custom Domains (optional) if you want it
- *    on your own domain instead of *.workers.dev.
- */
- 
-const SYSTEM_PROMPT = `You are the official website assistant for I.TRAXE, India's first GPS + GSM
-women's safety keychain. Answer only using the facts below. Keep answers short (2-4 sentences),
-warm, and direct — like a founder texting back, not a corporate bot. If something isn't covered
-below, say you're not sure and point the person to WhatsApp (+91 8073067935) or
-i.traxe.23@gmail.com instead of guessing.
- 
-PRODUCT: GPS (NEO-6M) + GSM (A7670C, 4G) safety keychain disguised as a panda accessory.
-One hidden-button press sends live GPS location via SMS (Google Maps link) to a pre-set trusted
-contact. No app, no internet, no smartphone needed on either end. GSM cell-tower triangulation is
-the fallback when GPS is weak indoors (67% of assaults happen indoors).
- 
-PRICE: ₹4,499, one-time, Phase 1. No subscription.
- 
-SPECS: Arduino UNO controller, A7670C GSM module, NEO-6M GPS, LiPo 2500mAh battery (~24hr
-standby), USB-C charging, debounced push-button SOS, works on any Indian SIM (Jio/Airtel/Vi/BSNL).
- 
-PROOF / TRACTION: Working prototype built and tested. SOS SMS delivered from Bengaluru to
-Agartala, Tripura (~3,500km) and coverage confirmed toward Srinagar (~2,800km). Missed-call
-trigger also works. Website live with WhatsApp ordering. Invited to Berlin Startup Summit (1 of
-150 Indian founders, AXICA/Brandenburg Gate) and a Dubai investors' dinner. Pitching at PES
-University, August 29 2026.
- 
-WHY IT'S NEEDED: NCRB recorded 4.45 lakh+ crimes against women in India in 2022; 600,000+ rape
-cases reported 2005-2025 (~1 every 15 minutes). Apps need unlocking (4-6 steps in a panic),
-Bluetooth panic buttons have ~10m range, pepper spray needs proximity, alarm keychains alert
-bystanders but send no location.
- 
-COMPETITORS: No direct competitor in India combines GPS+GSM+no-app+disguise. Pepper spray/alarm
-keychains send no location. SafetiPin/Raksha are free but need smartphone+internet. Smartwatch
-SOS options cost ₹3,000-15,000 and still need a paired phone.
- 
-MARKET: TAM ~₹18,000 Cr (women aged 15-45 in India), SAM ~₹2,400 Cr (urban/semi-urban
-smartphone users), 3-year SOM target ~₹120 Cr (~266,000 units).
- 
-TARGET USERS: Primary - college students (18-25). Secondary - working women (25-40). Also a
-gifting market (parents buying for daughters) and rural women (no smartphone needed).
- 
-TEAM: Founder Samar; Co-Founder & CCO Latifa Iram. Solo-built hardware project, no external
-funding, founder started at age 17.
- 
-BUSINESS MODEL: Direct hardware sales at ₹4,499/unit (~44% gross margin, BOM ~₹2,500 in Phase 1).
-Planned: telecom SIM-plan bundles, B2B/institutional bulk pricing, a compact Phase 2 device,
-extended warranty.
- 
-ROADMAP: Phase 1 (now) - prototype validated, first sales, PES University pitch. Phase 2
-(mid-2026-2027) - custom PCB, compact 3-inch design, flexible antenna, voice recorder,
-Amazon/Flipkart listing, B2B deals. Phase 3 (2027-2028) - mini camera module, high-decibel
-alarm, optional companion app, expansion to Bangladesh/Nepal/Sri Lanka.
- 
-ASK: Mentorship, network access, early institutional orders, or seed funding to scale
-manufacturing from prototype to 100+ units.
- 
-CONTACT: WhatsApp +91 8073067935, email i.traxe.23@gmail.com, site itraxe.in.`;
- 
-export default {
-  async fetch(request, env) {
-    // CORS — restrict this to your real domain before going live.
-    const corsHeaders = {
-      "Access-Control-Allow-Origin": "*", // e.g. "https://itraxe.in"
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-    };
- 
-    if (request.method === "OPTIONS") {
-      return new Response(null, { headers: corsHeaders });
-    }
-    if (request.method !== "POST") {
-      return new Response("Use POST", { status: 405, headers: corsHeaders });
-    }
- 
-    try {
-      const { message, history } = await request.json();
-      if (!message || typeof message !== "string") {
-        return new Response(JSON.stringify({ error: "Missing 'message'" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
- 
-      const messages = Array.isArray(history) ? history.slice(-6) : [];
-      messages.push({ role: "user", content: message });
- 
-      const apiRes = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": env.ANTHROPIC_API_KEY,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-6",
-          max_tokens: 300,
-          system: SYSTEM_PROMPT,
-          messages,
-        }),
-      });
- 
-      if (!apiRes.ok) {
-        const errText = await apiRes.text();
-        return new Response(JSON.stringify({ error: "Upstream error", detail: errText }), {
-          status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
- 
-      const data = await apiRes.json();
-      const reply = (data.content || []).map(b => b.text || "").join("").trim()
-        || "Sorry, I couldn't generate a reply — try WhatsApp instead.";
- 
-      return new Response(JSON.stringify({ reply }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    } catch (err) {
-      return new Response(JSON.stringify({ error: "Server error", detail: String(err) }), {
-        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-  },
-};
+
  
 /* ── PRICING ── */
 .pricing-card {
