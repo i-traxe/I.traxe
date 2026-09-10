@@ -1359,7 +1359,346 @@ footer {
     </div>
   </div>
 </section>
+<!-- ============================================================
+  I.TRAXE FAQ CHATBOT WIDGET
+  Drop-in replacement for the "Sales Tracker" section.
 
+  This is a self-contained, no-backend, no-API-key chatbot.
+  It answers common questions about I.TRAXE using the info from
+  your research document (problem, product, pricing, market,
+  competitors, business model, traction, roadmap, contact).
+
+  HOW TO USE:
+  1. Copy the <style> block into your <head> (or a linked .css file).
+  2. Copy the <div id="itraxe-chatbot">...</div> block to wherever
+     the sales tracker section used to be in index.html.
+  3. Copy the <script> block just before </body>.
+  That's it — no dependencies, no build step, works on GitHub Pages.
+============================================================= -->
+
+<style>
+  :root{
+    --itx-ink:#1c1030;
+    --itx-panel:#241536;
+    --itx-accent:#ff5178;
+    --itx-accent-soft:#ffd6e2;
+    --itx-bubble-bot:#2f1c46;
+    --itx-bubble-user:#ff5178;
+    --itx-text:#f3eefc;
+    --itx-muted:#b7a9cf;
+  }
+
+  #itraxe-chatbot, #itraxe-chatbot *{ box-sizing:border-box; }
+
+  #itraxe-chatbot{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    z-index:9999;
+  }
+
+  /* Floating launcher button */
+  .itx-launcher{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:linear-gradient(145deg,var(--itx-accent),#c23a63);
+    box-shadow:0 8px 24px rgba(255,81,120,.45);
+    border:none;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:transform .2s ease;
+  }
+  .itx-launcher:hover{ transform:scale(1.06); }
+  .itx-launcher svg{ width:26px; height:26px; fill:#fff; }
+
+  /* Chat panel */
+  .itx-panel{
+    position:absolute;
+    bottom:74px;
+    right:0;
+    width:340px;
+    max-width:88vw;
+    height:460px;
+    max-height:70vh;
+    background:var(--itx-panel);
+    border-radius:18px;
+    box-shadow:0 20px 50px rgba(0,0,0,.45);
+    display:none;
+    flex-direction:column;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.07);
+  }
+  .itx-panel.itx-open{ display:flex; }
+
+  .itx-header{
+    background:linear-gradient(120deg,var(--itx-ink),var(--itx-panel));
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .itx-header-dot{
+    width:10px; height:10px; border-radius:50%;
+    background:#4de08c; box-shadow:0 0 0 3px rgba(77,224,140,.2);
+  }
+  .itx-header-text strong{ color:var(--itx-text); font-size:14.5px; display:block; }
+  .itx-header-text span{ color:var(--itx-muted); font-size:12px; }
+  .itx-close{
+    margin-left:auto; background:none; border:none; color:var(--itx-muted);
+    font-size:18px; cursor:pointer; line-height:1; padding:4px;
+  }
+  .itx-close:hover{ color:#fff; }
+
+  .itx-messages{
+    flex:1;
+    padding:14px;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .itx-messages::-webkit-scrollbar{ width:6px; }
+  .itx-messages::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.15); border-radius:6px; }
+
+  .itx-msg{
+    max-width:82%;
+    padding:9px 12px;
+    border-radius:14px;
+    font-size:13.5px;
+    line-height:1.45;
+    white-space:pre-wrap;
+  }
+  .itx-msg.bot{
+    align-self:flex-start;
+    background:var(--itx-bubble-bot);
+    color:var(--itx-text);
+    border-bottom-left-radius:4px;
+  }
+  .itx-msg.user{
+    align-self:flex-end;
+    background:var(--itx-bubble-user);
+    color:#fff;
+    border-bottom-right-radius:4px;
+  }
+  .itx-msg a{ color:var(--itx-accent-soft); }
+
+  .itx-chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    padding:0 14px 10px;
+  }
+  .itx-chip{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14);
+    color:var(--itx-text);
+    font-size:12px;
+    padding:6px 10px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .itx-chip:hover{ background:rgba(255,81,120,.25); }
+
+  .itx-inputbar{
+    display:flex;
+    gap:8px;
+    padding:10px;
+    border-top:1px solid rgba(255,255,255,.08);
+    background:rgba(0,0,0,.15);
+  }
+  .itx-inputbar input{
+    flex:1;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14);
+    color:var(--itx-text);
+    border-radius:10px;
+    padding:9px 11px;
+    font-size:13.5px;
+    outline:none;
+  }
+  .itx-inputbar input::placeholder{ color:var(--itx-muted); }
+  .itx-inputbar input:focus{ border-color:var(--itx-accent); }
+  .itx-send{
+    background:var(--itx-accent);
+    border:none;
+    color:#fff;
+    width:38px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+  }
+  .itx-send:hover{ background:#e2436a; }
+
+  @media (max-width:480px){
+    .itx-panel{ width:92vw; height:66vh; bottom:72px; }
+  }
+</style>
+
+<div id="itraxe-chatbot">
+  <div class="itx-panel" id="itxPanel">
+    <div class="itx-header">
+      <span class="itx-header-dot"></span>
+      <div class="itx-header-text">
+        <strong>I.TRAXE Assistant</strong>
+        <span>Ask me anything about the product</span>
+      </div>
+      <button class="itx-close" id="itxClose" aria-label="Close chat">✕</button>
+    </div>
+    <div class="itx-messages" id="itxMessages"></div>
+    <div class="itx-chips" id="itxChips"></div>
+    <div class="itx-inputbar">
+      <input type="text" id="itxInput" placeholder="Type your question..." autocomplete="off" />
+      <button class="itx-send" id="itxSend" aria-label="Send">➤</button>
+    </div>
+  </div>
+
+  <button class="itx-launcher" id="itxLauncher" aria-label="Open I.TRAXE chatbot">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.4 1.05 4.57 2.77 6.19-.15 1.4-.68 2.66-1.5 3.7-.2.24-.02.6.3.58 1.86-.1 3.5-.77 4.83-1.77A11.4 11.4 0 0 0 12 20c5.52 0 10-4.03 10-9s-4.48-9-10-9z"/></svg>
+  </button>
+</div>
+
+<script>
+(function(){
+  // ---- Knowledge base built from the I.TRAXE research document ----
+  var KB = [
+    {
+      id: "what",
+      keywords: ["what is", "itraxe", "about", "product is", "who are you"],
+      answer: "I.TRAXE is India's first GPS + GSM safety keychain, disguised as a panda accessory. With one press of a hidden button it sends your live GPS location via SMS to a trusted contact — no app, no internet, and no smartphone required."
+    },
+    {
+      id: "how",
+      keywords: ["how does it work", "how it works", "how do i use", "sos button", "how to use", "trigger"],
+      answer: "Three steps:\n1) Press the hidden SOS button (works from a pocket or bag).\n2) The onboard GPS module locks your live coordinates (with GSM cell-tower fallback indoors).\n3) An SMS with a Google Maps link is sent instantly to your pre-configured trusted contact — on any phone, any carrier."
+    },
+    {
+      id: "price",
+      keywords: ["price", "cost", "how much", "buy", "purchase", "order"],
+      answer: "The Phase 1 device is priced at ₹4,499, one-time — no subscription. You can order via WhatsApp: +91 8073067935."
+    },
+    {
+      id: "specs",
+      keywords: ["specs", "specification", "components", "battery", "chip", "hardware", "sim", "gps module", "gsm module"],
+      answer: "Phase 1 specs: Arduino UNO microcontroller, A7670C GSM (4G LTE) module, NEO-6M GPS module, 2500mAh LiPo battery (~24hr standby), USB-C charging, and a debounced push-button SOS trigger. It works with any Indian SIM — Jio, Airtel, Vi, BSNL."
+    },
+    {
+      id: "no-app",
+      keywords: ["app", "internet", "wifi", "data", "smartphone needed"],
+      answer: "No app is needed on either end. I.TRAXE runs on the GSM network (not WiFi/data), and the person receiving your SOS just gets a plain SMS with a Google Maps link — even a basic ₹500 keypad phone can receive it."
+    },
+    {
+      id: "market",
+      keywords: ["market size", "tam", "sam", "som", "opportunity", "how big"],
+      answer: "The Indian market: TAM ₹18,000 Cr+ (all women aged 15–45), SAM ₹2,400 Cr (urban/semi-urban women with smartphones), and a 3-year SOM target of ₹120 Cr (~266,000 units)."
+    },
+    {
+      id: "competitors",
+      keywords: ["competitor", "alternative", "vs", "compare", "pepper spray", "alarm keychain", "smartwatch"],
+      answer: "There's no direct competitor in India combining GPS + GSM SMS + no-app + disguised hardware in one device. Alternatives like pepper spray, alarm keychains, and safety apps each fail on at least one of those — usually they need a phone/app/internet, or don't send your location at all."
+    },
+    {
+      id: "business",
+      keywords: ["business model", "revenue", "margin", "b2b", "how do you make money"],
+      answer: "Primary revenue is direct hardware sales (₹4,499/unit, ~44% gross margin). Planned Phase 2 streams include SIM-plan bundling with telecom partners, B2B/institutional bulk orders for colleges and NGOs, a compact Phase 2 device, and extended warranties."
+    },
+    {
+      id: "traction",
+      keywords: ["traction", "proof", "tested", "milestone", "range test", "does it actually work"],
+      answer: "A working prototype has successfully sent an SOS SMS from Bengaluru to Agartala, Tripura — about 3,500 km away — confirming nationwide GSM coverage. The team has also received invitations to the Berlin Startup Summit and a Dubai investors' dinner, and is pitching at PES University."
+    },
+    {
+      id: "roadmap",
+      keywords: ["roadmap", "phase 1", "phase 2", "phase 3", "future", "next", "plan"],
+      answer: "Phase 1 (now): prototype validation and first direct sales. Phase 2: a compact 3-inch device with a custom PCB, Amazon/Flipkart listing, and B2B partnerships. Phase 3: camera module, alarm, an optional companion app, and international expansion."
+    },
+    {
+      id: "founder",
+      keywords: ["founder", "who made", "team", "samar", "latifa", "ceo", "started"],
+      answer: "I.TRAXE was founded by Samar, with Latifa Iram as Co-Founder & CCO. It's a Bengaluru-based, self-funded, pre-revenue hardware startup."
+    },
+    {
+      id: "contact",
+      keywords: ["contact", "email", "whatsapp", "reach", "phone number", "get in touch"],
+      answer: "You can reach the team at i.traxe.23@gmail.com or via WhatsApp at +91 8073067935."
+    }
+  ];
+
+  var FALLBACK = "I don't have an exact answer for that yet — but you can reach the team directly on WhatsApp (+91 8073067935) or email i.traxe.23@gmail.com and they'll help you out.";
+
+  var SUGGESTIONS = ["What is I.TRAXE?", "How does it work?", "What's the price?", "How do I contact you?"];
+
+  function findAnswer(text){
+    var q = text.toLowerCase();
+    var best = null, bestScore = 0;
+    KB.forEach(function(entry){
+      var score = 0;
+      entry.keywords.forEach(function(k){
+        if(q.indexOf(k) !== -1) score += k.split(" ").length;
+      });
+      if(score > bestScore){ bestScore = score; best = entry; }
+    });
+    return best ? best.answer : FALLBACK;
+  }
+
+  var panel = document.getElementById('itxPanel');
+  var launcher = document.getElementById('itxLauncher');
+  var closeBtn = document.getElementById('itxClose');
+  var messages = document.getElementById('itxMessages');
+  var chipsEl = document.getElementById('itxChips');
+  var input = document.getElementById('itxInput');
+  var sendBtn = document.getElementById('itxSend');
+
+  function addMessage(text, who){
+    var div = document.createElement('div');
+    div.className = 'itx-msg ' + who;
+    div.textContent = text;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function botReply(text){
+    setTimeout(function(){
+      addMessage(findAnswer(text), 'bot');
+    }, 400);
+  }
+
+  function renderChips(){
+    chipsEl.innerHTML = '';
+    SUGGESTIONS.forEach(function(s){
+      var chip = document.createElement('button');
+      chip.className = 'itx-chip';
+      chip.textContent = s;
+      chip.onclick = function(){ handleSend(s); };
+      chipsEl.appendChild(chip);
+    });
+  }
+
+  function handleSend(text){
+    text = (text || input.value).trim();
+    if(!text) return;
+    addMessage(text, 'user');
+    input.value = '';
+    botReply(text);
+  }
+
+  launcher.addEventListener('click', function(){
+    panel.classList.toggle('itx-open');
+    if(panel.classList.contains('itx-open') && messages.childElementCount === 0){
+      addMessage("Hi! I'm the I.TRAXE assistant — ask me about the product, pricing, how it works, or anything else.", 'bot');
+      renderChips();
+    }
+  });
+  closeBtn.addEventListener('click', function(){ panel.classList.remove('itx-open'); });
+  sendBtn.addEventListener('click', function(){ handleSend(); });
+  input.addEventListener('keydown', function(e){ if(e.key === 'Enter') handleSend(); });
+})();
+</script>
 <!-- PRICING -->
 <section class="section" id="pricing">
   <div class="section-inner">
