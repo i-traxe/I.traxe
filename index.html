@@ -45,7 +45,9 @@ html {
 }
 
 body {
-  background: var(--black);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,255,255,0.03) 0%, transparent 60%),
+    var(--black);
   color: var(--white);
   font-family: var(--font-body);
   font-weight: 300;
@@ -137,9 +139,9 @@ nav.scrolled {
 }
 .nav-logo {
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   color: var(--white);
   text-decoration: none;
   white-space: nowrap;
@@ -229,7 +231,7 @@ nav.scrolled {
 
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(36px, 3.5vw, 10px);
+  font-size: clamp(40px, 6vw, 92px);
   font-weight: 900;
   line-height: 0.95;
   letter-spacing: -0.02em;
