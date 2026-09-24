@@ -563,49 +563,78 @@ nav.scrolled {
 }
 
 /* ── HOW IT WORKS ── */
-.steps-layout { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
-.step-block {
-  background: var(--black);
-  padding: 60px 48px;
+.steps-layout {
   position: relative;
-  overflow: hidden;
-  transition: background 0.4s;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  max-width: 900px;
 }
-.step-block:hover { background: var(--gray-1); }
-.step-block::after {
+.steps-layout::before {            /* the vertical timeline line */
   content: '';
   position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 1px;
-  background: var(--white);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  left: 23px;
+  top: 24px;
+  bottom: 24px;
+  width: 1px;
+  background: var(--border-strong);
 }
-.step-block:hover::after { transform: scaleX(1); }
+.step-block {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+.step-block.has-media {            /* only used if you add a photo later */
+  grid-template-columns: 48px 1fr 300px;
+  align-items: center;
+}
 .step-num {
+  position: relative;
+  z-index: 1;                      /* sits on top of the line */
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--black);
   font-family: var(--font-display);
-  font-size: 120px;
-  font-weight: 900;
-  color: rgba(255,255,255,0.04);
-  line-height: 1;
-  margin-bottom: 20px;
-  letter-spacing: -0.05em;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
 }
-.step-icon { font-size: 40px; margin-bottom: 20px; display: block; }
 .step-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  margin-bottom: 14px;
+  margin: 8px 0 12px;
 }
 .step-desc {
-  font-size: 14px;
-  font-weight: 300;
-  line-height: 1.75;
-  color: var(--gray-4);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--gray-5);
+  max-width: 46ch;
 }
-
+.step-media {
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--border);
+  background: var(--gray-1);
+  overflow: hidden;
+}
+.step-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@media (max-width: 768px) {
+  .steps-layout { gap: 44px; }
+  .step-block,
+  .step-block.has-media { grid-template-columns: 48px 1fr; gap: 20px; }
+  .step-media { grid-column: 2; }
+}
 /* ── SERVICES ── */
 .services-section { background: var(--gray-1); }
 .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -1305,15 +1334,36 @@ footer {
 <section class="section" id="how">
   <div class="section-inner">
     <div class="section-label reveal">How It Works</div>
-    <h2 class="section-title reveal">Three steps.<br><em>That's all.</em></h2>
+    <h2 class="section-title reveal">What happens when<br><em>you press the button.</em></h2>
     <div class="steps-layout">
-      <div class="step-block reveal"><div class="step-num">01</div><span class="step-icon">🔴</span><div class="step-title">Press SOS</div><div class="step-desc">The hidden SOS button on the keychain. One press — no phone, no app, no unlocking needed. Works from your pocket.</div></div>
-      <div class="step-block reveal"><div class="step-num">02</div><span class="step-icon">📍</span><div class="step-title">Location Locked</div><div class="step-desc">GPS captures your precise location instantly. Outdoors: pinpoint accuracy. Indoors: cell tower backup always sends your location.</div></div>
-      <div class="step-block reveal"><div class="step-num">03</div><span class="step-icon">📱</span><div class="step-title">SMS Delivered</div><div class="step-desc">Your trusted contact gets an SMS with a Google Maps link. No internet needed. Any phone can receive it.</div></div>
+
+      <div class="step-block reveal">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <h3 class="step-title">Press the SOS button</h3>
+          <p class="step-desc">The button is hidden on the keychain, so you can press it without taking out your phone. No app, no unlocking. You can do it from your pocket.</p>
+        </div>
+      </div>
+
+      <div class="step-block reveal">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <h3 class="step-title">The keychain finds your location</h3>
+          <p class="step-desc">Outdoors, the GPS module gives your exact spot. Indoors, where GPS is weak, it falls back to the nearest cell tower, so a location still goes out.</p>
+        </div>
+      </div>
+
+      <div class="step-block reveal">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <h3 class="step-title">Your contact gets a text</h3>
+          <p class="step-desc">An SMS with a Google Maps link goes to the trusted number you set up. It's a normal text, so no internet is needed and any phone can open it, even a basic keypad phone.</p>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
-
 <!-- SERVICES -->
 <section class="section services-section">
   <div class="section-inner">
