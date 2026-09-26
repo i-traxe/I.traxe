@@ -20,7 +20,7 @@
 <meta name="description" content="I.TRAXE — India's first women safety keychain. One press sends your live GPS location via SMS. No app. No internet. No delay.">
 <title>I.TRAXE — Safety Reimagined</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --black: #050505;
@@ -33,8 +33,8 @@
   --gray-6: #cccccc;
   --border: rgba(255,255,255,0.08);
   --border-strong: rgba(255,255,255,0.15);
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-display: 'Space Grotesk', -apple-system, sans-serif;
+--font-body: 'Manrope', -apple-system, sans-serif;
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -206,10 +206,9 @@ nav.scrolled {
 .hero-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
   border: 1px solid var(--border-strong);
   padding: 8px 16px;
-  border-radius: 100px;
+  border-radius: 2px;
   margin-bottom: 40px;
   opacity: 0;
   animation: fadeSlideUp 1s ease 3s forwards;
@@ -242,7 +241,7 @@ nav.scrolled {
   opacity: 0;
   animation: fadeSlideUp 1s ease 3.2s forwards;
 }
-.hero-title .italic { font-style: italic; font-weight: 400; color: var(--gray-5); }
+.hero-title .italic { font-style: normal; font-weight: 700; color: var(--white); }
 .hero-title .block { display: block; }
 
 .hero-desc {
@@ -480,7 +479,7 @@ nav.scrolled {
   letter-spacing: -0.02em;
   margin-bottom: 24px;
 }
-.section-title em { font-style: italic; font-weight: 400; color: var(--gray-5); }
+.section-title em { font-style: normal; font-weight: 300; color: var(--gray-5); text-decoration: underline; text-decoration-color: var(--gray-4); text-underline-offset: 8px; }
 .section-sub {
   font-size: 16px;
   font-weight: 300;
@@ -1233,9 +1232,8 @@ footer {
 
   <div class="hero-left">
     <div class="hero-badge">
-      <div class="hero-badge-dot"></div>
-      <span>India's First · Never Before In The World</span>
-    </div>
+  <span>India's First - India's First of Its Kind</span>
+</div>
     <h1 class="hero-title">
       <span class="block">Safety</span>
       <span class="block italic">reimagined.</span>
