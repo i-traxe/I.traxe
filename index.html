@@ -2098,5 +2098,39 @@ setTimeout(() => {
   if (overlay) overlay.remove();
 }, 3400);
 </script>
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, query, where, orderBy, getDocs, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // Paste your copied firebaseConfig object here (the whole thing, from const firebaseConfig = { ... };)
+ // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAcRgl11hl45KfWxpAaarrSe6miu1R1pWc",
+  authDomain: "i-traxe.firebaseapp.com",
+  projectId: "i-traxe",
+  storageBucket: "i-traxe.firebasestorage.app",
+  messagingSenderId: "112917327628",
+  appId: "1:112917327628:web:9e70ca17bcce7999dda329",
+  measurementId: "G-9LYSRQQ4CV"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.submitReview = async (name, rating, comment) => {
+    await addDoc(collection(db, "Reviews"), {
+      name, rating: Number(rating), comment,
+      approved: false,
+      createdAt: serverTimestamp()
+    });
+  };
+
+  window.loadReviews = async () => {
+    const q = query(collection(db, "Reviews"), where("approved", "==", true), orderBy("createdAt", "desc"));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => d.data());
+  };
+</script>
 </body>
 </html>
