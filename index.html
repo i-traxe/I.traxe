@@ -1831,13 +1831,26 @@ footer {
 </section>
 
 <!-- REVIEWS -->
+<section class="section" id="reviews">
+  <div class="section-inner">
+    <div class="section-label reveal">Reviews</div>
+    <h2 class="section-title reveal">What people <em>say.</em></h2>
+    <div id="adminBar" style="display:none;margin-bottom:24px;">
+      <button class="form-btn" id="adminBtn" onclick="adminToggle()">Admin login</button>
+    </div>
+    <div class="reviews-grid" id="reviewsGrid"></div>
+    <div class="review-empty-state" id="emptyState"><p>No reviews yet. Be the first to share your experience.</p></div>
     <div class="review-form reveal">
-    <div class="review-form-title">Leave a review</div>
-     <div class="field"><label>Your Name</label><input type="text" id="rName" placeholder="e.g. Latifa Iram"></div>
+      <div class="review-form-title">Leave a review</div>
+      <div class="field"><label>Your Name</label><input type="text" id="rName" maxlength="60" placeholder="Your name"></div>
       <div class="field"><label>Rating</label><div class="star-row"><button class="star-opt" onclick="setRating(1)">★ 1</button><button class="star-opt" onclick="setRating(2)">★ 2</button><button class="star-opt" onclick="setRating(3)">★ 3</button><button class="star-opt" onclick="setRating(4)">★ 4</button><button class="star-opt" onclick="setRating(5)">★ 5</button></div></div>
-      <div class="field"><label>Your Review</label><textarea id="rText" rows="4" placeholder="Share your experience with I.TRAXE..."></textarea></div>
+      <div class="field"><label>Your Review</label><textarea id="rText" rows="4" maxlength="600" placeholder="Share your experience with I.TRAXE..."></textarea></div>
+      <label style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--gray-5);margin:4px 0 16px;line-height:1.5;">
+        <input type="checkbox" id="rConsent" style="width:auto;margin-top:3px;">
+        <span>I agree my name and review will be shown publicly, and I accept the <a href="/privacy.html" target="_blank" style="color:var(--white);">Privacy Policy</a></span>
+      </label>
       <button class="form-btn" onclick="submitReview()">Submit Review</button>
-      <div class="success-msg" id="reviewSuccess">✓ Thank you — your review has been submitted.</div>
+      <div class="success-msg" id="reviewSuccess">✓ Thank you, your review has been submitted.</div>
     </div>
   </div>
 </section>
@@ -1880,8 +1893,95 @@ footer {
   </nav>
   <div class="footer-copy">© 2026 I.TRAXE · India's First Safety Keychain</div>
 </footer>
-
+ 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+ 
 <script>
+ // ── REVIEWS (shared, Firebase) ──
+firebase.initializeApp({
+ // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  apiKey: "AIzaSyAcRgl11hl45KfWxpAaarrSe6miu1R1pWc",
+  authDomain: "i-traxe.firebaseapp.com",
+  projectId: "i-traxe",
+  storageBucket: "i-traxe.firebasestorage.app",
+  messagingSenderId: "112917327628",
+  appId: "1:112917327628:web:9e70ca17bcce7999dda329",
+  measurementId: "G-9LYSRQQ4CV"
+});
+const db = firebase.firestore();
+const auth = firebase.auth();
+const ADMIN_EMAIL = 'i.traxe.23@gmail.com';
+let isAdmin = false;
+let reviewsCache = [];
+
+function renderReviews() {
+  const grid = document.getElementById('reviewsGrid');
+  const empty = document.getElementById('emptyState');
+  grid.innerHTML = '';
+  if (!reviewsCache.length) { grid.style.display = 'none'; empty.style.display = 'block'; return; }
+  grid.style.display = 'grid';
+  empty.style.display = 'none';
+  reviewsCache.forEach(r => {
+    const card = document.createElement('div'); card.className = 'review-card';
+    const stars = document.createElement('div'); stars.className = 'review-stars';
+    stars.textContent = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+    const text = document.createElement('div'); text.className = 'review-text';
+    text.textContent = '"' + r.text + '"';
+    const author = document.createElement('div'); author.className = 'review-author';
+    author.textContent = '— ' + r.name;
+    card.append(stars, text, author);
+    if (isAdmin) {
+      const del = document.createElement('button'); del.className = 'form-btn';
+      del.style.marginTop = '16px'; del.textContent = 'Delete';
+      del.onclick = () => deleteReview(r.id);
+      card.appendChild(del);
+    }
+    grid.appendChild(card);
+  });
+}
+
+db.collection('reviews').orderBy('createdAt', 'desc').limit(50).onSnapshot(snap => {
+  reviewsCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  renderReviews();
+});
+
+async function submitReview() {
+  const name = document.getElementById('rName').value.trim();
+  const text = document.getElementById('rText').value.trim();
+  if (!name || !text || !rating) { alert('Please fill all fields and select a rating.'); return; }
+  if (!document.getElementById('rConsent').checked) { alert('Please tick the box to agree before submitting.'); return; }
+  try {
+    await db.collection('reviews').add({
+      name: name.slice(0, 60), text: text.slice(0, 600), rating: rating,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('rName').value = '';
+    document.getElementById('rText').value = '';
+    document.getElementById('rConsent').checked = false;
+    setRating(0); rating = 0;
+    const s = document.getElementById('reviewSuccess');
+    s.style.display = 'block';
+    setTimeout(() => s.style.display = 'none', 4000);
+  } catch (e) { alert('Could not submit your review. Please try again.'); }
+}
+
+// ── ADMIN (only you) ──
+// Open itraxe.in/?admin to see the login button
+if (location.search.includes('admin')) document.getElementById('adminBar').style.display = 'block';
+function adminToggle() {
+  if (auth.currentUser) auth.signOut();
+  else auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+}
+auth.onAuthStateChanged(u => {
+  isAdmin = !!u && u.email === ADMIN_EMAIL;
+  document.getElementById('adminBtn').textContent = isAdmin ? 'Admin logout' : 'Admin login';
+  renderReviews();
+});
+function deleteReview(id) {
+  if (confirm('Delete this review?')) db.collection('reviews').doc(id).delete();
+}
 // ── CURSOR ──
 const cursor = document.getElementById('cursor');
 const trail = document.getElementById('cursor-trail');
