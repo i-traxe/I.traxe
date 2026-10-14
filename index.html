@@ -2083,43 +2083,7 @@ function setRating(r) {
   document.querySelectorAll('.star-opt').forEach((b, i) => b.classList.toggle('active', i < r));
 }
 
-// ── REVIEWS ──
-let reviews = JSON.parse(localStorage.getItem('itraxe_v2_reviews') || '[]');
-function renderReviews() {
-  const grid = document.getElementById('reviewsGrid');
-  const empty = document.getElementById('emptyState');
-  if (reviews.length > 0) {
-    grid.style.display = 'grid';
-    empty.style.display = 'none';
-    grid.innerHTML = reviews.map(r => `
-      <div class="review-card">
-        <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
-        <div class="review-text">"${r.text}"</div>
-        <div class="review-author">— ${r.name}</div>
-      </div>`).join('');
-  } else {
-    grid.style.display = 'none';
-    empty.style.display = 'block';
-  }
-}
-
-
-function submitReview() {
-  const name = document.getElementById('rName').value.trim();
-  const text = document.getElementById('rText').value.trim();
-  if (!name || !text || !rating) { alert('Please fill all fields and select a rating.'); return; }
-  reviews.unshift({ name, text, rating });
-  localStorage.setItem('itraxe_v2_reviews', JSON.stringify(reviews));
-  renderReviews();
-  document.getElementById('rName').value = '';
-  document.getElementById('rText').value = '';
-  setRating(0); rating = 0;
-  const s = document.getElementById('reviewSuccess');
-  s.style.display = 'block';
-  setTimeout(() => s.style.display = 'none', 4000);
-}
-
-// ── CONTACT ──
+ // ── CONTACT ──
 function sendContact() {
   const name = document.getElementById('cName').value.trim();
   const email = document.getElementById('cEmail').value.trim();
