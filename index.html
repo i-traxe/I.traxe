@@ -934,6 +934,26 @@ nav.scrolled {
   margin-bottom: 60px;
 }
 .review-empty-state p { font-size: 14px; font-weight: 300; color: var(--gray-4); font-style: italic; }
+ /* Mobile: show only 2 reviews + See more */
+.reviews-toggle {
+  display: none;
+  margin: 0 auto;
+  padding: 12px 28px;
+  background: transparent;
+  color: var(--white);
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: none;
+}
+@media (max-width: 640px) {
+  #reviewsGrid .review-card.review-extra { display: none; }
+  #reviewsGrid.expanded .review-card.review-extra { display: block; }
+  .reviews-toggle.visible { display: block; }
+}
 
 /* Review form */
 .review-form {
@@ -1839,6 +1859,7 @@ footer {
       <button class="form-btn" id="adminBtn" onclick="adminToggle()">Admin login</button>
     </div>
     <div class="reviews-grid" id="reviewsGrid"></div>
+<button class="reviews-toggle" id="reviewsToggle" onclick="toggleReviews()">See more</button>
     <div class="review-empty-state" id="emptyState"><p>No reviews yet.</p></div>
     <div class="review-form reveal">
       <div class="review-form-title">Leave a review</div>
@@ -1935,7 +1956,7 @@ function renderReviews() {
   const grid = document.getElementById('reviewsGrid');
   const empty = document.getElementById('emptyState');
   grid.innerHTML = '';
-  if (!reviewsCache.length) { grid.style.display = 'none'; empty.style.display = 'block'; return; }
+   if (!reviewsCache.length) { grid.style.display = 'none'; empty.style.display = 'block'; applyReviewLimit(); return; }
   grid.style.display = 'grid';
   empty.style.display = 'none';
   reviewsCache.forEach(r => {
@@ -1953,10 +1974,25 @@ function renderReviews() {
       del.onclick = () => deleteReview(r.id);
       card.appendChild(del);
     }
-    grid.appendChild(card);
+       grid.appendChild(card);
   });
+  applyReviewLimit();
 }
-
+ // ── MOBILE: show 2 reviews + See more ──
+const REVIEW_LIMIT = 2;
+function applyReviewLimit() {
+  const grid = document.getElementById('reviewsGrid');
+  const btn = document.getElementById('reviewsToggle');
+  const cards = grid.querySelectorAll('.review-card');
+  cards.forEach((card, i) => card.classList.toggle('review-extra', i >= REVIEW_LIMIT));
+  btn.classList.toggle('visible', cards.length > REVIEW_LIMIT);
+  if (cards.length <= REVIEW_LIMIT) grid.classList.remove('expanded');
+  btn.textContent = grid.classList.contains('expanded') ? 'See less' : 'See more';
+}
+function toggleReviews() {
+  document.getElementById('reviewsGrid').classList.toggle('expanded');
+  applyReviewLimit();
+}
 db.collection('reviews').orderBy('createdAt', 'desc').limit(50).onSnapshot(snap => {
   reviewsCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   renderReviews();
