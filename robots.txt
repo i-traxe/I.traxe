@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://itraxe.in/sitemap.xml
