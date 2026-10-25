@@ -1205,6 +1205,11 @@ footer {
   .crime-stat { flex: unset; max-width: 90%; padding: 28px 24px; }
   .crime-number { font-size: clamp(52px, 16vw, 80px); }
 }
+  @media (max-width: 640px) {
+  footer nav.footer-nav { padding: 8px 12px; gap: 6px 10px; }
+  footer nav.footer-nav a { font-size: 8px; letter-spacing: 0.06em; }
+  footer nav.footer-nav a[href="/terms.html"] { flex-basis: auto; }
+}
 </style>
 <script type="application/ld+json">
 [
