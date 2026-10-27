@@ -1927,7 +1927,60 @@ footer {
     </div>
   </div>
 </section>
+  
+<!-- ABOUT US -->
+<section class="section about-section" id="about">
+  <div class="section-inner">
+    <div class="section-label reveal">About Us</div>
+    <h2 class="section-title reveal">The people behind<br><em>I.TRAXE.</em></h2>
+    <div class="about-grid">
+      <div class="about-card reveal">
+        <div class="about-name">Samar Zayyan</div>
+        <div class="about-role">Founder &amp; CEO</div>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-name">Latifa Iram</div>
+        <div class="about-role">Co-founder &amp; CCO</div>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-name">CA Gaurav Mishra</div>
+        <div class="about-role">Angel Investor</div>
+      </div>
+      <div class="about-card reveal">
+        <div class="about-name">CA Abhinav Srivastava</div>
+        <div class="about-role">Financial Advisor</div>
+      </div>
+    </div>
+  </div>
+</section>
 
+<style>
+.about-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+.about-card {
+  background:var(--gray-1);
+  border:1px solid var(--border);
+  padding:44px 32px;
+  transition:all .35s;
+}
+.about-card:hover { border-color:var(--border-strong); transform:translateY(-4px); }
+.about-name {
+  font-family:var(--font-display);
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:-0.01em;
+  margin-bottom:10px;
+}
+.about-role {
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:#800000;
+}
+@media (max-width:1024px) { .about-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:640px)  { .about-grid { grid-template-columns:1fr; } }
+</style>
+  
 <!-- CONTACT -->
  <section class="section" id="contact" style="background:var(--gray-1);">
   <div class="section-inner">
