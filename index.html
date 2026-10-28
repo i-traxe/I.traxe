@@ -1286,6 +1286,7 @@ footer {
     <li><a href="#how">How It Works</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#about">About Us</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <a href="https://wa.me/918073067935?text=Hey%20I.TRAXE%21%20%F0%9F%8C%B8%0A%0AI%20came%20across%20your%20website%20and%20I%27d%20love%20to%20place%20an%20order%20for%20the%20I.TRAXE%20Safety%20Keychain%20at%20%E2%82%B93%2C599%20%F0%9F%94%90%0A%0ACould%20you%20please%20confirm%20availability%20and%20delivery%20details%3F%20%F0%9F%9A%80%0A%0ALooking%20forward%20to%20hearing%20from%20you%21%20%F0%9F%99%8F." target="_blank" class="nav-cta">Order Now</a>
@@ -1934,22 +1935,39 @@ footer {
     <div class="section-label reveal">About Us</div>
     <h2 class="section-title reveal">The people behind<br><em>I.TRAXE.</em></h2>
     <div class="about-grid">
+
       <div class="about-card reveal">
+        <div class="about-photo">
+          <img src="images/samar.jpg" alt="Samar Zayyan" draggable="false">
+        </div>
         <div class="about-name">Samar Zayyan</div>
         <div class="about-role">Founder &amp; CEO</div>
       </div>
+
       <div class="about-card reveal">
+        <div class="about-photo">
+          <img src="images/latifa.jpg" alt="Latifa Iram" draggable="false">
+        </div>
         <div class="about-name">Latifa Iram</div>
         <div class="about-role">Co-founder &amp; CCO</div>
       </div>
+
       <div class="about-card reveal">
+        <div class="about-photo">
+          <img src="images/gaurav.jpg" alt="CA Gaurav Mishra" draggable="false">
+        </div>
         <div class="about-name">CA Gaurav Mishra</div>
         <div class="about-role">Angel Investor</div>
       </div>
+
       <div class="about-card reveal">
+        <div class="about-photo about-photo-initials">
+          <span>AS</span>
+        </div>
         <div class="about-name">CA Abhinav Srivastava</div>
         <div class="about-role">Financial Advisor</div>
       </div>
+
     </div>
   </div>
 </section>
@@ -1959,16 +1977,73 @@ footer {
 .about-card {
   background:var(--gray-1);
   border:1px solid var(--border);
-  padding:44px 32px;
+  padding:0 0 36px;
   transition:all .35s;
 }
 .about-card:hover { border-color:var(--border-strong); transform:translateY(-4px); }
+
+/* Photo box: protected, with a faint watermark and an invisible overlay */
+.about-photo {
+  position:relative;
+  aspect-ratio:4 / 5;
+  overflow:hidden;
+  background:#0a0a0a;
+  margin-bottom:24px;
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+}
+.about-photo img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  pointer-events:none;
+  -webkit-user-drag:none;
+  transition:filter .3s;
+}
+/* transparent layer on top: blocks right-click, drag and long-press saving */
+.about-photo::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:transparent;
+  z-index:2;
+}
+/* faint watermark so any copied photo is marked as ours */
+.about-photo::before {
+  content:'I.TRAXE';
+  position:absolute;
+  right:12px;
+  bottom:10px;
+  z-index:3;
+  font-family:var(--font-display);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.2em;
+  color:rgba(255,255,255,.35);
+  pointer-events:none;
+}
+.about-photo-initials {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--gray-2);
+}
+.about-photo-initials span {
+  font-family:var(--font-display);
+  font-size:56px;
+  font-weight:700;
+  color:var(--gray-5);
+}
+
 .about-name {
   font-family:var(--font-display);
-  font-size:22px;
+  font-size:20px;
   font-weight:700;
   letter-spacing:-0.01em;
-  margin-bottom:10px;
+  padding:0 32px;
+  margin-bottom:8px;
 }
 .about-role {
   font-size:11px;
@@ -1976,10 +2051,33 @@ footer {
   letter-spacing:.2em;
   text-transform:uppercase;
   color:#800000;
+  padding:0 32px;
 }
+
+/* photos go blank when the window loses focus (Snipping tool, Alt+Tab, screen share) */
+.about-section.is-blurred .about-photo img { filter:blur(30px) brightness(.4); }
+
 @media (max-width:1024px) { .about-grid { grid-template-columns:repeat(2,1fr); } }
 @media (max-width:640px)  { .about-grid { grid-template-columns:1fr; } }
 </style>
+
+<script>
+(function(){
+  var sec = document.getElementById('about');
+  if(!sec) return;
+
+  // no right-click, drag or text selection inside the About section
+  sec.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  sec.addEventListener('dragstart', function(e){ e.preventDefault(); });
+  sec.addEventListener('selectstart', function(e){ e.preventDefault(); });
+
+  // blank the photos when the window is not focused or the tab is hidden
+  function setBlur(on){ sec.classList.toggle('is-blurred', on); }
+  window.addEventListener('blur', function(){ setBlur(true); });
+  window.addEventListener('focus', function(){ setBlur(false); });
+  document.addEventListener('visibilitychange', function(){ setBlur(document.hidden); });
+})();
+</script>
   
 <!-- CONTACT -->
  <section class="section" id="contact" style="background:var(--gray-1);">
@@ -2028,6 +2126,7 @@ footer {
     <a href="#features">Features</a>
     <a href="#pricing">Pricing</a>
     <a href="#reviews">Reviews</a>
+    <a href="#about">About Us</a>
     <a href="#contact">Contact</a>
    <a href="/privacy.html">Privacy Policy</a>
    <a href="/terms.html">Terms &amp; Conditions</a>
