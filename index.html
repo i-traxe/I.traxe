@@ -1969,6 +1969,7 @@ footer {
   
 <!-- ABOUT US -->
 <section class="section about-section" id="about">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="li-icon" viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></symbol></svg>
   <div class="section-inner">
     <div class="section-label reveal">About Us</div>
     <h2 class="section-title reveal">The people behind<br><em>I.TRAXE.</em></h2>
@@ -1980,6 +1981,7 @@ footer {
         </div>
         <div class="about-name">Samar Zayyan</div>
         <div class="about-role">Founder &amp; CEO</div>
+              <a class="about-li" href="https://www.linkedin.com/in/samar-zayyan-5a614a404" target="_blank" rel="noopener noreferrer" aria-label="Samar Zayyan on LinkedIn"><svg><use href="#li-icon"/></svg></a>
       </div>
 
       <div class="about-card reveal">
@@ -1988,6 +1990,7 @@ footer {
         </div>
         <div class="about-name">Latifa Iram</div>
         <div class="about-role">Co-founder &amp; CCO</div>
+                <a class="about-li" href="https://www.linkedin.com/in/latifa-iram-43aa81323" target="_blank" rel="noopener noreferrer" aria-label="Latifa Iram on LinkedIn"><svg><use href="#li-icon"/></svg></a>
       </div>
 
       <div class="about-card reveal">
@@ -1996,6 +1999,7 @@ footer {
         </div>
         <div class="about-name">CA Gaurav Mishra</div>
         <div class="about-role">Angel Investor</div>
+                <a class="about-li" href="https://www.linkedin.com/in/gmishra5" target="_blank" rel="noopener noreferrer" aria-label="CA Gaurav Mishra on LinkedIn"><svg><use href="#li-icon"/></svg></a>
       </div>
 
       <div class="about-card reveal">
@@ -2004,6 +2008,7 @@ footer {
         </div>
         <div class="about-name">CA Abhinav Srivastava</div>
         <div class="about-role">Financial Advisor</div>
+                <a class="about-li" href="https://www.linkedin.com/in/abhinav-srivastava-58857917b" target="_blank" rel="noopener noreferrer" aria-label="CA Abhinav Srivastava on LinkedIn"><svg><use href="#li-icon"/></svg></a>
       </div>
 
     </div>
@@ -2016,6 +2021,7 @@ footer {
   background:var(--gray-1);
   border:1px solid var(--border);
   padding:0 0 36px;
+  position:relative;
   transition:all .35s;
 }
 .about-card:hover { border-color:var(--border-strong); transform:translateY(-4px); }
@@ -2093,6 +2099,24 @@ footer {
 }
 
 /* photos go blank when the window loses focus (Snipping tool, Alt+Tab, screen share) */
+  /* LinkedIn logo: right side gap mein, name/role ke saath aligned */
+.about-name, .about-role { padding-right:84px; }
+.about-li {
+  position:absolute;
+  right:32px;
+  bottom:40px;
+  width:36px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--border-strong);
+  color:#e6e6e6;
+  transition:all .25s;
+  z-index:4;
+}
+.about-li svg { width:18px; height:18px; fill:currentColor; }
+.about-li:hover, .about-li:focus-visible { background:#800000; border-color:#800000; color:#fff; }
 .about-section.is-blurred .about-photo img { filter:blur(30px) brightness(.4); }
 
 @media (max-width:1024px) { .about-grid { grid-template-columns:repeat(2,1fr); } }
