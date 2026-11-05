@@ -1756,73 +1756,89 @@ footer {
 
 <script>
 (function(){
-  // ---- Knowledge base built from the I.TRAXE research document ----
+ // ---- I.TRAXE chatbot: public info only ----
   var KB = [
     {
+      id: "greet",
+      keywords: ["hello", "hola", "namaste", "good morning", "good evening", "good afternoon"],
+      answer: "Hey! I can help with price, how it works, SIM, battery and ordering. What do you wanna know?"
+    },
+    {
       id: "what",
-      keywords: ["what is", "itraxe", "about", "product is", "who are you"],
-      answer: "I.TRAXE is India's first GPS + GSM safety keychain, disguised as a panda accessory. With one press of a hidden button it sends your live GPS location via SMS to a trusted contact — no app, no internet, and no smartphone required."
+      keywords: ["what is", "wat is", "whats itraxe", "what's itraxe", "itraxe", "i.traxe", "about", "product", "who are you", "explain", "kya hai"],
+      answer: "I.TRAXE is a GPS safety keychain with a panda design. Press the SOS button and your live location goes by SMS to your trusted contact. No app needed on either side."
     },
     {
       id: "how",
-      keywords: ["how does it work", "how it works", "how do i use", "sos button", "how to use", "trigger"],
-      answer: "Three steps:\n1) Press the hidden SOS button (works from a pocket or bag).\n2) The onboard GPS module locks your live coordinates (with GSM cell-tower fallback indoors).\n3) An SMS with a Google Maps link is sent instantly to your pre-configured trusted contact — on any phone, any carrier."
+      keywords: ["how does it work", "how it works", "hw it works", "hw does it work", "how do i use", "how to use", "sos button", "trigger", "kaise kaam", "kaise use"],
+      answer: "Quick version:\n1) Hold the SOS button on the keychain.\n2) It picks up your live GPS location.\n3) Your trusted contact gets an SMS with a Google Maps link.\nYou set the trusted contact's number once and you're done."
     },
     {
       id: "price",
-      keywords: ["price", "cost", "how much", "buy", "purchase", "order"],
-      answer: "The Phase 1 device is priced at ₹3,599, one-time — no subscription. You can order via WhatsApp: +91 8073067935."
+      keywords: ["price", "pricing", "cost", "how much", "hw much", "kitna", "kitne ka", "rate", "subscription"],
+      answer: "The device is ₹3,599, one-time. No subscription from us. You'll need your own SIM with an SMS pack for it to send alerts. To order, WhatsApp us: +91 8073067935."
     },
     {
-      id: "specs",
-      keywords: ["specs", "specification", "components", "battery", "chip", "hardware", "sim", "gps module", "gsm module"],
-      answer: "Phase 1 specs: Arduino UNO microcontroller, A7670C GSM (4G LTE) module, NEO-6M GPS module, 2500mAh LiPo battery (~24hr standby), USB-C charging, and a debounced push-button SOS trigger. It works with any Indian SIM — Jio, Airtel, Vi, BSNL."
+      id: "order",
+      keywords: ["order", "buy", "purchase", "where to buy", "kaise kharide", "kharidna", "get yours", "payment", "pay"],
+      answer: "Ordering is simple, just message us on WhatsApp: +91 8073067935. The team will take it from there."
+    },
+    {
+      id: "sim",
+      keywords: ["sim", "sim card", "jio", "airtel", "bsnl", "carrier", "sms pack", "which network"],
+      answer: "It needs a working 4G SIM with an SMS pack. Jio, Airtel and Vi work. BSNL isn't recommended because its coverage is limited in many areas. Not sure if a SIM comes with the device? Ask the team on WhatsApp: +91 8073067935."
+    },
+    {
+      id: "battery",
+      keywords: ["battery", "charge", "charging", "usb", "type-c", "type c", "standby", "charger"],
+      answer: "Standby is up to about 24 hours on a full charge. It charges with any USB Type-C charger. The charger isn't included in the box."
+    },
+    {
+      id: "coverage",
+      keywords: ["network", "signal", "coverage", "no network", "low network", "remote area", "everywhere", "reliable", "does it actually work", "work in", "emergency", "112", "police"],
+      answer: "It runs on the mobile network, so it needs signal and an active SIM with an SMS pack. Delivery of the alert can't be guaranteed in every location. Think of it as an extra layer of safety, and call 112 whenever you can."
     },
     {
       id: "no-app",
-      keywords: ["app", "internet", "wifi", "data", "smartphone needed"],
-      answer: "No app is needed on either end. I.TRAXE runs on the GSM network (not WiFi/data), and the person receiving your SOS just gets a plain SMS with a Google Maps link — even a basic ₹500 keypad phone can receive it."
+      keywords: ["need an app", "app needed", "app required", "internet", "wifi", "mobile data", "smartphone", "phone needed"],
+      answer: "No app needed. It works over the mobile network (SMS), not wifi or mobile data. Your trusted contact just gets a normal SMS with a Google Maps link, so any phone works."
     },
     {
-      id: "market",
-      keywords: ["market size", "tam", "sam", "som", "opportunity", "how big"],
-      answer: "The Indian market: TAM ₹18,000 Cr+ (all women aged 15–45), SAM ₹2,400 Cr (urban/semi-urban women with smartphones), and a 3-year SOM target of ₹120 Cr (~266,000 units)."
+      id: "proof",
+      keywords: ["tested", "proof", "range test", "legit", "scam", "trust you", "is it real"],
+      answer: "Fair question. In our range test, an SOS SMS sent from Bengaluru reached Agartala, about 3,500 km away. Want to know more? Ask the team on WhatsApp: +91 8073067935."
     },
     {
-      id: "competitors",
-      keywords: ["competitor", "alternative", "vs", "compare", "pepper spray", "alarm keychain", "smartwatch"],
-      answer: "There's no direct competitor in India combining GPS + GSM SMS + no-app + disguised hardware in one device. Alternatives like pepper spray, alarm keychains, and safety apps each fail on at least one of those — usually they need a phone/app/internet, or don't send your location at all."
+      id: "team",
+      keywords: ["founder", "who made", "who built", "who started", "team", "samar", "latifa", "ceo"],
+      answer: "I.TRAXE is built in Bengaluru by Samar Zayyan (Founder & CEO) and Latifa Iram (Co-founder & CCO). You can meet the team in the About section of this page."
     },
     {
-      id: "business",
-      keywords: ["business model", "revenue", "margin", "b2b", "how do you make money"],
-      answer: "Primary revenue is direct hardware sales (₹3,599/unit, ~44% gross margin). Planned Phase 2 streams include SIM-plan bundling with telecom partners, B2B/institutional bulk orders for colleges and NGOs, a compact Phase 2 device, and extended warranties."
+      id: "delivery",
+      keywords: ["delivery", "deliver", "shipping", "dispatch", "kitne din", "how many days", "when will i get", "kab milega"],
+      answer: "Delivery time depends on your location, so the team confirms it when you order. Want to connect with them? WhatsApp: +91 8073067935."
     },
     {
-      id: "traction",
-      keywords: ["traction", "proof", "tested", "milestone", "range test", "does it actually work"],
-      answer: "A working prototype has successfully sent an SOS SMS from Bengaluru to Agartala, Tripura — about 3,500 km away — confirming nationwide GSM coverage. The team has also received invitations to the Berlin Startup Summit and a Dubai investors' dinner, and is pitching at PES University."
+      id: "policy",
+      keywords: ["refund", "return", "exchange", "cancel", "money back", "warranty", "damage", "broken", "defect", "repair"],
+      answer: "For refund and warranty details, the team shares the exact terms for your order directly. Want to connect with them? WhatsApp: +91 8073067935."
     },
     {
-      id: "roadmap",
-      keywords: ["roadmap", "phase 1", "phase 2", "phase 3", "future", "next", "plan"],
-      answer: "Phase 1 (now): prototype validation and first direct sales. Phase 2: a compact 3-inch device with a custom PCB, Amazon/Flipkart listing, and B2B partnerships. Phase 3: camera module, alarm, an optional companion app, and international expansion."
-    },
-    {
-      id: "founder",
-      keywords: ["founder", "who made", "team", "samar", "latifa", "ceo", "started"],
-      answer: "I.TRAXE was founded by Samar, with Latifa Iram as Co-Founder & CCO. It's a Bengaluru-based, self-funded, pre-revenue hardware startup."
+      id: "bot",
+      keywords: ["are you a bot", "are u a bot", "real person", "are you real", "are you human", "who am i talking"],
+      answer: "I'm an automated helper with ready answers about I.TRAXE, not a live person. For anything I can't answer, the team is on WhatsApp: +91 8073067935."
     },
     {
       id: "contact",
-      keywords: ["contact", "email", "whatsapp", "reach", "phone number", "get in touch"],
-      answer: "You can reach the team at i.traxe.23@gmail.com or via WhatsApp at +91 8073067935."
+      keywords: ["contact", "email", "whatsapp", "reach", "phone number", "number", "get in touch", "talk to someone", "call you"],
+      answer: "You can reach the team on WhatsApp at +91 8073067935 or email i.traxe.23@gmail.com."
     }
   ];
-
-  var FALLBACK = "I don't have an exact answer for that yet — but you can reach the team directly on WhatsApp (+91 8073067935) or email i.traxe.23@gmail.com and they'll help you out.";
-
-  var SUGGESTIONS = ["What is I.TRAXE?", "How does it work?", "What's the price?", "How do I contact you?"];
+ 
+  var FALLBACK = "Hmm, I'm not sure about that one yet. Easiest is to ask the team directly. Want to connect? WhatsApp: +91 8073067935 or email i.traxe.23@gmail.com.";
+ 
+  var SUGGESTIONS = ["What is I.TRAXE?", "How does it work?", "What's the price?", "How do I order?"];
+ 
 
   function findAnswer(text){
     var q = text.toLowerCase();
