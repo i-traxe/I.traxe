@@ -25,7 +25,7 @@
 <meta property="og:url" content="https://itraxe.in/">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --black: #050505;
@@ -123,71 +123,98 @@ body.hovering #cursor { width: 48px; height: 48px; }
   80%  { opacity: 1; transform: translate(0, 0) rotate(-5deg) scale(1); }
   100% { opacity: 1; transform: translate(0, 0) rotate(0deg) scale(1); }
 }
-/* ── NAV ── */
-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 500;
-  padding: 16px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: padding 0.4s, background 0.4s;
-  flex-wrap: nowrap;
-  gap: 8px;
-  background: rgba(5,5,5,0.85);
-  backdrop-filter: blur(16px);
-  overflow: hidden;
+/* ── NAV (new) ── */
+:root { --bar-h: 64px; }
+
+#nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: var(--bar-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1000;
+  background: rgba(5,5,5,0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: background .4s, border-color .4s;
 }
-nav.scrolled {
-  padding: 12px 40px;
-  background: rgba(5,5,5,0.94);
-  backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid var(--border);
+#nav.scrolled {
+  background: rgba(5,5,5,0.96);
+  border-bottom-color: var(--border);
 }
-.nav-logo {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--white);
+
+.nb-left { display: flex; align-items: center; gap: 12px; }
+
+.nb-burger {
+  width: 42px; height: 42px;
+  background: none; border: none; cursor: pointer;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center; gap: 6px;
+}
+.nb-burger span {
+  display: block; width: 24px; height: 2px;
+  background: var(--white); border-radius: 2px;
+  transition: transform .3s ease, opacity .3s ease;
+}
+.nb-burger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.nb-burger.open span:nth-child(2) { opacity: 0; }
+.nb-burger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+.nb-brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-weight: 800; font-size: 19px; letter-spacing: 3px;
   text-decoration: none;
-  white-space: nowrap;
-  flex-shrink: 0;
+  background: linear-gradient(90deg, #ffffff 0%, #d9d9d9 65%, #ff4d4d 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 18px rgba(179,0,0,0.35);
 }
-.nav-center {
-  display: flex;
-  gap: 14px;
-  list-style: none;
-  flex-shrink: 1;
-  min-width: 0;
+.nb-dot {
+  width: 9px; height: 9px; flex-shrink: 0; border-radius: 50%;
+  background: #b30000;
+  box-shadow: 0 0 10px 2px rgba(179,0,0,0.7);
 }
-.nav-center a {
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0.1em;
+
+.nb-cta {
+  background: #800000; color: #fff; text-decoration: none;
+  font-size: 11px; font-weight: 500; letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--gray-5);
-  text-decoration: none;
-  transition: color 0.3s;
-  white-space: nowrap;
+  padding: 10px 16px; border-radius: 3px; white-space: nowrap;
+  transition: background .3s;
 }
-.nav-center a:hover { color: #800000; }
-.nav-cta {
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--black);
-  background: var(--white);
-  padding: 9px 16px;
-  text-decoration: none;
-  transition: all 0.3s;
-  border-radius: 2px;
-  white-space: nowrap;
-  flex-shrink: 0;
+.nb-cta:hover { background: #a00000; }
+
+/* Overlay + drawer */
+.nb-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease; z-index: 998;
 }
-.nav-cta:hover { background: var(--gray-6); transform: translateY(-1px); }
+.nb-overlay.show { opacity: 1; pointer-events: auto; }
+
+.nb-drawer {
+  position: fixed; top: 0; left: 0; height: 100%;
+  width: min(300px, 82%);
+  background: #0f0f0f; border-right: 1px solid #1f1f1f;
+  transform: translateX(-100%);
+  transition: transform .35s ease;
+  z-index: 999;
+  padding: calc(var(--bar-h) + 12px) 24px 24px;
+  display: flex; flex-direction: column; overflow-y: auto;
+}
+.nb-drawer.open { transform: translateX(0); }
+.nb-drawer a {
+  color: var(--white); text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 14px; letter-spacing: .15em; text-transform: uppercase;
+  padding: 16px 0; border-bottom: 1px solid #1c1c1c;
+  transition: color .2s;
+}
+.nb-drawer a:hover { color: #b30000; }
+.nb-drawer .nb-drawer-cta {
+  margin-top: 18px; background: #800000; color: #fff;
+  text-align: center; border: none; border-radius: 3px;
+}
 /* ── HERO ── */
 .hero {
   min-height: 100vh;
@@ -1279,17 +1306,28 @@ footer {
 <div id="cursor-trail"></div>
 
 <!-- NAV -->
-<nav id="nav">
-  <a href="#" class="nav-logo">I<em>.</em>TRAXE</a>
-  <ul class="nav-center">
-    <li><a href="#problem">Problem</a></li>
-    <li><a href="#how">How It Works</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#about">About Us</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <a href="https://wa.me/918073067935?text=Hey%20I.TRAXE%21%20%F0%9F%8C%B8%0A%0AI%20came%20across%20your%20website%20and%20I%27d%20love%20to%20place%20an%20order%20for%20the%20I.TRAXE%20Safety%20Keychain%20at%20%E2%82%B93%2C599%20%F0%9F%94%90%0A%0ACould%20you%20please%20confirm%20availability%20and%20delivery%20details%3F%20%F0%9F%9A%80%0A%0ALooking%20forward%20to%20hearing%20from%20you%21%20%F0%9F%99%8F." target="_blank" class="nav-cta">Order Now</a>
+<header id="nav">
+  <div class="nb-left">
+    <button class="nb-burger" id="nbBurger" aria-label="Open menu" aria-expanded="false" aria-controls="nbDrawer">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="#" class="nb-brand"><span class="nb-dot" aria-hidden="true"></span>I.TRAXE</a>
+  </div>
+  <a href="https://wa.me/918073067935?text=Hey%20I.TRAXE%21%20%F0%9F%8C%B8%0A%0AI%20came%20across%20your%20website%20and%20I%27d%20love%20to%20place%20an%20order%20for%20the%20I.TRAXE%20Safety%20Keychain%20at%20%E2%82%B93%2C599%20%F0%9F%94%90%0A%0ACould%20you%20please%20confirm%20availability%20and%20delivery%20details%3F%20%F0%9F%9A%80%0A%0ALooking%20forward%20to%20hearing%20from%20you%21%20%F0%9F%99%8F." target="_blank" class="nb-cta">Get Yours</a>
+</header>
+
+<div class="nb-overlay" id="nbOverlay"></div>
+<nav class="nb-drawer" id="nbDrawer" aria-label="Main menu">
+  <a href="#problem">Problem</a>
+  <a href="#how">How It Works</a>
+  <a href="#features">Features</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#reviews">Reviews</a>
+  <a href="#about">About Us</a>
+  <a href="#contact">Contact</a>
+  <a href="#privacy">Privacy Policy</a>
+  <a href="#terms">Terms &amp; Conditions</a>
+  <a href="https://wa.me/918073067935?text=Hey%20I.TRAXE%21%20%F0%9F%8C%B8%0A%0AI%20came%20across%20your%20website%20and%20I%27d%20love%20to%20place%20an%20order%20for%20the%20I.TRAXE%20Safety%20Keychain%20at%20%E2%82%B93%2C599%20%F0%9F%94%90%0A%0ACould%20you%20please%20confirm%20availability%20and%20delivery%20details%3F%20%F0%9F%9A%80%0A%0ALooking%20forward%20to%20hearing%20from%20you%21%20%F0%9F%99%8F." target="_blank" class="nb-drawer-cta">Get Yours — ₹3,599</a>
 </nav>
 
 <!-- HERO -->
@@ -2422,6 +2460,26 @@ setTimeout(() => {
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getFirestore, collection, addDoc, query, where, orderBy, getDocs, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+</script>
+  <script>
+(function () {
+  const burger = document.getElementById('nbBurger');
+  const drawer = document.getElementById('nbDrawer');
+  const overlay = document.getElementById('nbOverlay');
+
+  function setMenu(open) {
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    drawer.classList.toggle('open', open);
+    overlay.classList.toggle('show', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  burger.addEventListener('click', () => setMenu(!drawer.classList.contains('open')));
+  overlay.addEventListener('click', () => setMenu(false));
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+})();
 </script>
 </body>
 </html>
