@@ -17,9 +17,14 @@
   --gray-4: #8a8a8a;
   --gray-5: #b5b5b5;
   --border: rgba(255,255,255,0.1);
+
+  /* Brand maroon. Change --maroon to match the homepage exactly if needed. */
+  --maroon: #800020;
+  --maroon-text: #c94a60; /* lighter tint of the maroon, readable on black */
 }
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+::selection { background: var(--maroon); color: #ffffff; }
 body {
   background: var(--black);
   color: var(--white);
@@ -29,35 +34,117 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 header {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
   border-bottom: 1px solid var(--border);
 }
-.logo { font-size: 22px; font-weight: 700; letter-spacing: 0.08em; color: var(--white); text-decoration: none; }
-.back { font-size: 13px; color: var(--gray-5); text-decoration: none; }
-.back:hover, .back:focus-visible { color: var(--white); }
+header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--maroon), transparent 70%);
+}
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  text-decoration: none;
+}
+.logo::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 8px;
+  border-radius: 50%;
+  background: var(--maroon);
+  vertical-align: middle;
+}
+.back {
+  font-size: 13px;
+  color: var(--gray-5);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.back:hover, .back:focus-visible { color: var(--maroon-text); }
 main { max-width: 720px; margin: 0 auto; padding: 72px 24px 96px; }
-h1 { font-size: clamp(34px, 6vw, 52px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 40px; }
-h2 { font-size: 20px; font-weight: 600; margin: 44px 0 12px; letter-spacing: -0.01em; }
+h1 {
+  font-size: clamp(34px, 6vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 40px;
+}
+h1::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin-top: 18px;
+  background: var(--maroon);
+  border-radius: 2px;
+}
+h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 44px 0 12px;
+  padding-left: 14px;
+  border-left: 3px solid var(--maroon);
+  letter-spacing: -0.01em;
+}
 p, li { color: var(--gray-5); font-size: 16px; }
 p { margin-bottom: 14px; }
 ul { margin: 0 0 14px 20px; }
 li { margin-bottom: 6px; }
+li::marker { color: var(--maroon-text); }
 strong { color: var(--white); font-weight: 500; }
-a { color: var(--white); text-underline-offset: 3px; }
+a {
+  color: var(--maroon-text);
+  text-decoration: underline;
+  text-decoration-color: var(--maroon);
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+a:hover { color: #e07a8e; }
 .contact-box {
   margin-top: 16px;
   padding: 20px 24px;
   border: 1px solid var(--border);
+  border-left: 3px solid var(--maroon);
   background: var(--gray-1);
   border-radius: 4px;
 }
 .contact-box p { margin: 0 0 4px; }
-footer { border-top: 1px solid var(--border); padding: 28px 40px; color: var(--gray-4); font-size: 13px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
-footer a { color: var(--gray-5); }
-a:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
+footer {
+  position: relative;
+  border-top: 1px solid var(--border);
+  padding: 28px 40px;
+  color: var(--gray-4);
+  font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  justify-content: space-between;
+}
+footer::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 30%, var(--maroon));
+}
+footer a { color: var(--gray-5); text-decoration: none; transition: color 0.2s ease; }
+footer a:hover { color: var(--maroon-text); }
+a:focus-visible { outline: 2px solid var(--maroon-text); outline-offset: 3px; }
 @media (max-width: 640px) {
   header, footer { padding-left: 20px; padding-right: 20px; }
   main { padding-top: 48px; }
