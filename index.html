@@ -773,30 +773,84 @@ body.hovering #cursor { width: 48px; height: 48px; }
 .feature-title { font-size: 15px; font-weight: 500; margin-bottom: 10px; letter-spacing: -0.01em; }
 .feature-desc { font-size: 13px; font-weight: 300; line-height: 1.65; color: var(--gray-4); }
 
-/* ── WHY US ── */
+/* ── WHY I.TRAXE IS DIFFERENT ── */
 .why-section { background: var(--gray-1); }
-.why-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
-.why-list { display: flex; flex-direction: column; }
-.why-item {
-  padding: 36px 0;
-  border-bottom: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: 60px 1fr;
-  gap: 24px;
-  align-items: start;
+
+.cmp-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  background: var(--black);
+  margin-top: 48px;
 }
-.why-item:first-child { border-top: 1px solid var(--border); }
-.why-index {
+.cmp-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.cmp-table th, .cmp-table td {
+  padding: 18px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.cmp-table tbody tr:last-child td { border-bottom: none; }
+.cmp-table thead th {
+  background: #0b0b0b;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--white);
+  white-space: nowrap;
+}
+.cmp-table th:first-child, .cmp-table td:first-child {
+  text-align: left;
+  position: sticky;
+  left: 0;
+  background: var(--black);
+  color: var(--white);
+  font-weight: 400;
+  z-index: 1;
+}
+.cmp-table thead th:first-child { background: #0b0b0b; }
+.cmp-table .cmp-us { background: rgba(128,0,0,.22); }
+.cmp-table thead .cmp-us { background: #800000; color: #fff; }
+.cmp-y { color: #3ecf8e; font-weight: 600; }
+.cmp-n { color: #ff6b6b; font-weight: 600; }
+.cmp-p { color: #c9c9c9; font-weight: 500; }
+.cmp-note {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--gray-4);
+  margin-top: 16px;
+  max-width: 760px;
+}
+
+.why-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+.why-card {
+  background: var(--black);
+  border: 1px solid var(--border);
+  padding: 32px 28px;
+  transition: border-color .3s, transform .3s;
+}
+.why-card:hover { border-color: #800000; transform: translateY(-4px); }
+.why-card-num {
   font-family: var(--font-display);
   font-size: 13px;
   font-style: italic;
   color: var(--gray-4);
-  padding-top: 3px;
+  margin-bottom: 14px;
 }
-.why-title { font-size: 16px; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.01em; }
-.why-desc { font-size: 13px; font-weight: 300; line-height: 1.7; color: var(--gray-4); }
-.why-visual {
-  aspect-ratio: 1;
+.why-card h3 { font-size: 16px; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.01em; }
+.why-card p { font-size: 13px; font-weight: 300; line-height: 1.7; color: var(--gray-4); }
+
+.why-sos {
   background: var(--black);
   border: 1px solid var(--border);
   display: flex;
@@ -804,16 +858,17 @@ body.hovering #cursor { width: 48px; height: 48px; }
   justify-content: center;
   position: relative;
   overflow: hidden;
+  min-height: 180px;
 }
-.why-visual::before {
+.why-sos::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(128,0,0,.18) 0%, transparent 70%);
 }
 .sos-word {
   font-family: var(--font-display);
-  font-size: 120px;
+  font-size: 80px;
   font-weight: 900;
   font-style: italic;
   color: #800000;
@@ -824,7 +879,13 @@ body.hovering #cursor { width: 48px; height: 48px; }
 }
 @keyframes sosFade {
   0%, 100% { opacity: 0.15; }
-   50% { opacity: 1; text-shadow: 0 0 80px rgba(128,0,0,0.6); }
+  50% { opacity: 1; text-shadow: 0 0 80px rgba(128,0,0,0.6); }
+}
+
+@media (max-width: 1024px) { .why-cards { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) {
+  .why-cards { grid-template-columns: 1fr; }
+  .cmp-table th, .cmp-table td { padding: 14px 14px; font-size: 13px; }
 }
 /* ── STATS ── */
 .stats-section {
@@ -1663,22 +1724,41 @@ footer {
   </div>
 </section>
 
-<!-- WHY US -->
-<section class="section why-section">
+<!-- WHY I.TRAXE IS DIFFERENT -->
+<section class="section why-section" id="why">
   <div class="section-inner">
-    <div class="section-label reveal">Why Choose Us</div>
-    <h2 class="section-title reveal">Why<br><em>I.TRAXE?</em></h2>
-    <div class="why-layout">
-      <div class="why-list">
-        <div class="why-item reveal"><div class="why-index">1.</div><div><div class="why-title">First of its kind in India</div><div class="why-desc">No other product combines GPS tracking, GSM SMS alerts, and a discreet wearable form factor in India.</div></div></div>
-        <div class="why-item reveal"><div class="why-index">2.</div><div><div class="why-title">No app. No internet needed.</div><div class="why-desc">Even a ₹500 Nokia phone can receive the SOS alert. Zero setup on receiver's end.</div></div></div>
-        <div class="why-item reveal"><div class="why-index">3.</div><div><div class="why-title">Always on you</div><div class="why-desc">A keychain goes everywhere your keys go. You never forget it, never leave it behind.</div></div></div>
-        <div class="why-item reveal"><div class="why-index">4.</div><div><div class="why-title">100% Phone Independent</div><div class="why-desc">No app, no Bluetooth, no WiFi, no phone in hand. Works completely on its own, making it fundamentally different from every safety product in the market.</div></div></div>
-        <div class="why-item reveal"><div class="why-index">5.</div><div><div class="why-title">Why buy this?</div><div class="why-desc">Because the one moment you need help, you won't have time to unlock your phone. One press. That's all it takes.</div></div></div>
-      </div>
-    <div class="why-visual reveal">
-  <div class="sos-word">SOS</div>
-</div>
+    <div class="section-label reveal">Why I.TRAXE Is Different</div>
+    <h2 class="section-title reveal">Why I.TRAXE<br><em>is different.</em></h2>
+    <p class="section-sub reveal" style="margin-bottom:0;">Safety apps, smart watches and panic buttons each solve part of the problem. Here is how I.TRAXE compares.</p>
+
+    <div class="cmp-wrap reveal">
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="cmp-us">I.TRAXE</th>
+            <th>SOS apps</th>
+            <th>Smart watch</th>
+            <th>Panic button</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Phone-independent</td><td class="cmp-us cmp-y">Yes</td><td class="cmp-n">No</td><td class="cmp-n">No</td><td class="cmp-y">Yes</td></tr>
+          <tr><td>Works without mobile data</td><td class="cmp-us cmp-y">Yes</td><td class="cmp-n">No</td><td class="cmp-p">Partial</td><td class="cmp-n">No</td></tr>
+          <tr><td>GPS location to contacts</td><td class="cmp-us cmp-y">Yes</td><td class="cmp-y">Yes</td><td class="cmp-y">Yes</td><td class="cmp-n">No</td></tr>
+          <tr><td>Single-press SOS</td><td class="cmp-us cmp-y">Yes</td><td class="cmp-n">No</td><td class="cmp-p">Partial</td><td class="cmp-y">Yes</td></tr>
+          <tr><td>Discreet keychain design</td><td class="cmp-us cmp-y">Yes</td><td class="cmp-p">n/a</td><td class="cmp-n">No</td><td class="cmp-p">Partial</td></tr>
+          <tr><td>Under ₹5,000</td><td class="cmp-us cmp-y">Yes</td><td class="cmp-p">Free*</td><td class="cmp-n">No</td><td class="cmp-y">Yes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cmp-note reveal">*Free to download, but depends on an unlocked, internet-connected smartphone. I.TRAXE needs a SIM card and cellular (SMS) coverage. Comparison is based on typical products in each category; features vary by model.</p>
+
+    <div class="why-cards">
+      <div class="why-card reveal"><div class="why-card-num">1.</div><h3>First of its kind in India</h3><p>No other product combines GPS tracking, GSM SMS alerts, and a discreet wearable form factor in India.</p></div>
+      <div class="why-card reveal"><div class="why-card-num">2.</div><h3>No app. No internet needed.</h3><p>Even a ₹500 Nokia phone can receive the SOS alert. Zero setup on receiver's end.</p></div>
+      <div class="why-card reveal"><div class="why-card-num">3.</div><h3>Always on you</h3><p>A keychain goes everywhere your keys go. You never forget it, never leave it behind.</p></div>
+      <div class="why-sos reveal"><div class="sos-word">SOS</div></div>
     </div>
   </div>
 </section>
