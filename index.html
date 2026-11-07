@@ -1281,7 +1281,23 @@ footer {
   footer nav.footer-nav a { font-size: 12px; letter-spacing: 0.08em; }
   footer nav.footer-nav a[href="/terms.html"] { flex-basis: auto; }
   .hero { padding-top: 100px; }
-    .diff-table-wrap { width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    /* ===== WHY I.TRAXE IS DIFFERENT (scoped) ===== */
+  .diff-table-wrap { width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid #2a2a2a; background:#0a0a0a; margin-top:8px; }
+  .diff-table { width:100%; min-width:620px; border-collapse:collapse; font-size:14px; }
+  .diff-table th, .diff-table td { padding:14px 16px; text-align:center; border-bottom:1px solid #2a2a2a; color:#cfcfcf; }
+  .diff-table th:first-child, .diff-table td:first-child { text-align:left; color:#e6e6e6; min-width:190px; }
+  .diff-table thead th { font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; background:#0f0f0f; }
+  .diff-table thead th.diff-hl { background:#800000; color:#fff; }
+  .diff-table tbody td.diff-hl { background:rgba(128,0,0,.14); }
+  .diff-table tbody tr:last-child td { border-bottom:0; }
+  .diff-yes { color:#3fbf7a; font-weight:600; }
+  .diff-no { color:#e0525a; font-weight:600; }
+  .diff-part { color:#c8a24a; font-weight:600; }
+  .diff-na { color:#6f6f6f; }
+  .diff-note { font-size:12px; color:#6f6f6f; margin:14px 0 0; line-height:1.6; }
+  .diff-intro { max-width:640px; margin-bottom:40px; }
+  .diff-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; margin-top:56px; }
+  @media (max-width:1024px) { .diff-cards { grid-template-columns:1fr; } }
 </style>
 <script type="application/ld+json">
 [
