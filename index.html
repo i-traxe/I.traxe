@@ -1353,36 +1353,27 @@ footer {
   footer nav.footer-nav a { font-size: 12px; letter-spacing: 0.08em; }
   footer nav.footer-nav a[href="/terms.html"] { flex-basis: auto; }
   .hero { padding-top: 100px; }
-/* ── 1. COLOUR TOKENS ─────────────────────────────────────────
-   Product = panda (black / white / soft pink blush).
-   Maroon stays as the brand accent in a few key places.
-   Change a value here and the whole site follows. */
+
+/* ── 1. COLOUR TOKENS ───────────────────────────────────────── */
 :root {
-  --white: #f4efec;                    /* warm off-white (was #f8f8f6) */
-  --pink: #ffb3b8;                     /* soft pink, same as chatbot links */
-  --pink-line: rgba(255,179,184,.45);  /* pink for borders / rings */
+  --white: #f4efec;
+  --pink: #ffb3b8;
+  --pink-line: rgba(255,179,184,.45);
   --maroon: #800000;
-  --gray-1: #121011;                   /* black with a hint of warmth */
+  --gray-1: #121011;
   --gray-2: #1c1819;
 }
 
-/* Hero headline: first line off-white, second line stays maroon */
 .hero-title .block:first-child { color: var(--white); }
 
-/* "Get Yours" buttons:
-   hero  -> soft pink
-   nav + drawer -> stay maroon
-   pricing button -> already white (uses --white) */
 .btn-primary { background: var(--pink); color: #1a0a0c; }
 .btn-primary:hover {
   background: #ffc6ca;
   color: #1a0a0c;
   box-shadow: 0 20px 60px rgba(255,179,184,.25);
 }
-/* fix: drawer button text turned maroon-on-maroon on hover/tap */
 .nb-drawer .nb-drawer-cta:hover { color: #fff; }
 
-/* Small details -> pink */
 .nb-brand { background: linear-gradient(90deg, #ffffff 0%, #f4efec 60%, var(--pink) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .nb-drawer a:hover { color: var(--pink); }
 .section-label::before { background: var(--pink); }
@@ -1397,18 +1388,10 @@ footer {
 .contact-val a:hover { border-color: var(--pink); }
 .vbtn:hover, .vbtn.active { border-color: var(--pink-line); color: var(--pink); }
 
-/* About: role text was dark maroon on black (hard to read) -> pink.
-   .about-section prefix is needed because the About <style> sits lower in the page */
 .about-section .about-role { color: var(--pink); }
 
-/* Still maroon on purpose: nav "Get Yours", drawer button, hero "reimagined.",
-   heading underline, I.TRAXE column in the comparison table, SOS word,
-   LinkedIn hover, story block line, nav dot. */
 
-
-/* ── 2. PHONE VIEW — less "motu" ──────────────────────────────
-   Why it looked heavy: two ".section" padding rules existed
-   (64px, then 80px), and the 80px one won. Fixed below. */
+/* ── 2. PHONE VIEW ──────────────────────────────────────────── */
 @media (max-width: 640px) {
 
   /* sections + headings */
@@ -1428,11 +1411,26 @@ footer {
   .btn-primary { padding: 14px 24px; font-size: 12px; }
   .hero-right { margin-top: 28px; }
 
-  /* cube viewer + buttons: smaller */
-  .viewer-wrap { gap: 12px; padding: 0; }
-  .cube-scene { transform: scale(.82); transform-origin: top center; margin-bottom: -43px; }
-  .viewer-btns { gap: 5px; }
-  .vbtn { padding: 6px 10px; font-size: 9px; letter-spacing: .1em; }
+  /* ── 3D viewer fix ──
+     Old version: cube scaled to .82 with a big negative margin, which
+     pulled the cube over the hint text and made labels unreadable.
+     Now: smaller scale, no overlap, labels brighter and wrap cleanly. */
+  .viewer-wrap { gap: 16px; padding: 0 0 8px; overflow: visible; }
+  .cube-scene { transform: scale(.9); transform-origin: top center; margin-bottom: -24px; }
+  .viewer-btns {
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+  }
+  .vbtn {
+    padding: 7px 11px;
+    font-size: 10px;
+    letter-spacing: .08em;
+    color: rgba(244,239,236,.75);
+    border-color: rgba(255,255,255,.2);
+  }
 
   /* card gaps */
   .services-grid, .why-cards, .reviews-grid { gap: 12px; }
@@ -1495,7 +1493,7 @@ footer {
   .about-section .about-li { right: 20px; bottom: 26px; }
   .about-section .about-story { margin-top: 32px; }
 
-  /* footer (specificity bumped: its <style> sits lower in the page) */
+  /* footer */
   html footer.itx-footer { padding: 36px 20px 88px; }
   footer.itx-footer .itx-f-cols { gap: 24px; }
   footer.itx-footer .itx-f-social { margin-top: 24px; padding-top: 20px; }
