@@ -2227,47 +2227,55 @@ footer {
     <div class="section-label reveal">About Us</div>
     <h2 class="section-title reveal">The people behind<br><em>I.TRAXE.</em></h2>
     <div class="about-grid">
-
+ 
       <div class="about-card reveal">
         <div class="about-photo">
           <img src="samar.jpg" alt="Samar Zayyan" draggable="false">
         </div>
         <div class="about-name">Samar Zayyan</div>
         <div class="about-role">Founder &amp; CEO</div>
-              <a class="about-li" href="https://www.linkedin.com/in/samar-zayyan-5a614a404" target="_blank" rel="noopener noreferrer" aria-label="Samar Zayyan on LinkedIn"><svg><use href="#li-icon"/></svg></a>
+        <a class="about-li" href="https://www.linkedin.com/in/samar-zayyan-5a614a404" target="_blank" rel="noopener noreferrer" aria-label="Samar Zayyan on LinkedIn"><svg><use href="#li-icon"/></svg></a>
       </div>
-
+ 
       <div class="about-card reveal">
         <div class="about-photo">
           <img src="latifa.jpg" alt="Latifa Iram" draggable="false">
         </div>
         <div class="about-name">Latifa Iram</div>
         <div class="about-role">Co-founder &amp; CCO</div>
-                <a class="about-li" href="https://www.linkedin.com/in/latifa-iram-43aa81323" target="_blank" rel="noopener noreferrer" aria-label="Latifa Iram on LinkedIn"><svg><use href="#li-icon"/></svg></a>
+        <a class="about-li" href="https://www.linkedin.com/in/latifa-iram-43aa81323" target="_blank" rel="noopener noreferrer" aria-label="Latifa Iram on LinkedIn"><svg><use href="#li-icon"/></svg></a>
       </div>
-
+ 
       <div class="about-card reveal">
         <div class="about-photo">
           <img src="gaurav.jpg" alt="CA Gaurav Mishra" draggable="false">
         </div>
         <div class="about-name">CA Gaurav Mishra</div>
         <div class="about-role">Angel Investor</div>
-                <a class="about-li" href="https://www.linkedin.com/in/gmishra5" target="_blank" rel="noopener noreferrer" aria-label="CA Gaurav Mishra on LinkedIn"><svg><use href="#li-icon"/></svg></a>
+        <a class="about-li" href="https://www.linkedin.com/in/gmishra5" target="_blank" rel="noopener noreferrer" aria-label="CA Gaurav Mishra on LinkedIn"><svg><use href="#li-icon"/></svg></a>
       </div>
-
+ 
       <div class="about-card reveal">
         <div class="about-photo about-photo-initials">
           <span>AS</span>
         </div>
         <div class="about-name">CA Abhinav Srivastava</div>
         <div class="about-role">Financial Advisor</div>
-                <a class="about-li" href="https://www.linkedin.com/in/abhinav-srivastava-58857917b" target="_blank" rel="noopener noreferrer" aria-label="CA Abhinav Srivastava on LinkedIn"><svg><use href="#li-icon"/></svg></a>
+        <a class="about-li" href="https://www.linkedin.com/in/abhinav-srivastava-58857917b" target="_blank" rel="noopener noreferrer" aria-label="CA Abhinav Srivastava on LinkedIn"><svg><use href="#li-icon"/></svg></a>
       </div>
-
+ 
     </div>
+ 
+    <!-- WHY WE STARTED -->
+    <div class="about-story reveal">
+      <h3 class="about-story-title">Why we started I.TRAXE</h3>
+      <p>Every day in India, millions of people step out for work, for college, for home, and the news keeps reminding us how quickly an ordinary day can turn. We didn't want to just read about it. We wanted to do something about it.</p>
+      <p class="about-story-close">I.TRAXE is our answer: simple, always with you, and there when it counts.</p>
+    </div>
+ 
   </div>
 </section>
-
+ 
 <style>
 .about-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
 .about-card {
@@ -2278,7 +2286,7 @@ footer {
   transition:all .35s;
 }
 .about-card:hover { border-color:var(--border-strong); transform:translateY(-4px); }
-
+ 
 /* Photo box: protected, with a faint watermark and an invisible overlay */
 .about-photo {
   position:relative;
@@ -2333,7 +2341,7 @@ footer {
   font-weight:700;
   color:var(--gray-5);
 }
-
+ 
 .about-name {
   font-family:var(--font-display);
   font-size:20px;
@@ -2350,9 +2358,8 @@ footer {
   color:#800000;
   padding:0 32px;
 }
-
-/* photos go blank when the window loses focus (Snipping tool, Alt+Tab, screen share) */
-  /* LinkedIn logo: right side gap mein, name/role ke saath aligned */
+ 
+/* LinkedIn logo: right side gap mein, name/role ke saath aligned */
 .about-name, .about-role { padding-right:84px; }
 .about-li {
   position:absolute;
@@ -2370,22 +2377,55 @@ footer {
 }
 .about-li svg { width:18px; height:18px; fill:currentColor; }
 .about-li:hover, .about-li:focus-visible { background:#800000; border-color:#800000; color:#fff; }
+ 
+/* photos go blank when the window loses focus (Snipping tool, Alt+Tab, screen share) */
 .about-section.is-blurred .about-photo img { filter:blur(30px) brightness(.4); }
-
+ 
+/* Why we started */
+.about-story {
+  margin-top:64px;
+  max-width:680px;
+  padding-left:28px;
+  border-left:2px solid #800000;
+}
+.about-story-title {
+  font-family:var(--font-display);
+  font-size:30px;
+  font-weight:700;
+  letter-spacing:-0.01em;
+  line-height:1.2;
+  margin:0 0 20px;
+}
+.about-story p {
+  font-size:16px;
+  line-height:1.7;
+  color:var(--gray-5, #a8a8a8);
+  margin:0 0 14px;
+}
+.about-story .about-story-close {
+  color:#f2f2f2;
+  margin-bottom:0;
+}
+ 
 @media (max-width:1024px) { .about-grid { grid-template-columns:repeat(2,1fr); } }
-@media (max-width:640px)  { .about-grid { grid-template-columns:1fr; } }
+@media (max-width:640px)  {
+  .about-grid { grid-template-columns:1fr; }
+  .about-story { margin-top:40px; padding-left:16px; }
+  .about-story-title { font-size:24px; margin-bottom:14px; }
+  .about-story p { font-size:13px; }
+}
 </style>
-
+ 
 <script>
 (function(){
   var sec = document.getElementById('about');
   if(!sec) return;
-
+ 
   // no right-click, drag or text selection inside the About section
   sec.addEventListener('contextmenu', function(e){ e.preventDefault(); });
   sec.addEventListener('dragstart', function(e){ e.preventDefault(); });
   sec.addEventListener('selectstart', function(e){ e.preventDefault(); });
-
+ 
   // blank the photos when the window is not focused or the tab is hidden
   function setBlur(on){ sec.classList.toggle('is-blurred', on); }
   window.addEventListener('blur', function(){ setBlur(true); });
