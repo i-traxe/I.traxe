@@ -2315,6 +2315,98 @@ footer {
       </div>
     </div>
   </div>
+  <style>
+  .bulk-box {
+    margin: 32px auto 0;
+    max-width: 640px;
+    padding: 28px;
+    border: 1px solid var(--pink-line);
+    border-radius: 16px;
+    background: var(--gray-2);
+    text-align: left;
+  }
+  .bulk-box h3 {
+    font-size: 22px;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+  .bulk-box p {
+    font-size: 14px;
+    color: rgba(244,239,236,.7);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .bulk-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .bulk-fields input,
+  .bulk-fields select {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--gray-1);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 8px;
+    color: var(--white);
+    font-size: 14px;
+    font-family: inherit;
+  }
+  .bulk-fields input:focus,
+  .bulk-fields select:focus {
+    outline: none;
+    border-color: var(--pink);
+  }
+  .bulk-fields button {
+    grid-column: 1 / -1;
+    padding: 14px;
+    background: var(--pink);
+    color: #1a0a0c;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .05em;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .bulk-fields button:hover { background: #ffc6ca; }
+  @media (max-width: 640px) {
+    .bulk-box { padding: 22px 18px; }
+    .bulk-fields { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="bulk-box">
+  <h3>Bulk Orders</h3>
+  <p>Bulk discounts available, message us for a quote.</p>
+  <div class="bulk-fields">
+    <input id="bulkQty" type="number" min="10" placeholder="Quantity (e.g. 50)">
+    <input id="bulkCity" type="text" placeholder="City">
+    <select id="bulkUse">
+      <option value="">Use case</option>
+      <option>College / hostel</option>
+      <option>Company / employees</option>
+      <option>School</option>
+      <option>Gift / event</option>
+      <option>Other</option>
+    </select>
+    <button type="button" onclick="sendBulkWA()">REQUEST QUOTE ON WHATSAPP</button>
+  </div>
+</div>
+
+<script>
+  function sendBulkWA() {
+    var qty = document.getElementById('bulkQty').value || '-';
+    var city = document.getElementById('bulkCity').value || '-';
+    var use = document.getElementById('bulkUse').value || '-';
+    var msg = "Hi I.TRAXE, I'd like a bulk quote.\n" +
+              "Quantity: " + qty + "\n" +
+              "City: " + city + "\n" +
+              "Use case: " + use;
+    window.open("https://wa.me/918073067935?text=" + encodeURIComponent(msg), "_blank");
+  }
+</script>
 </section>
 
 <!-- FAQ -->
