@@ -1353,6 +1353,153 @@ footer {
   footer nav.footer-nav a { font-size: 12px; letter-spacing: 0.08em; }
   footer nav.footer-nav a[href="/terms.html"] { flex-basis: auto; }
   .hero { padding-top: 100px; }
+/* ── 1. COLOUR TOKENS ─────────────────────────────────────────
+   Product = panda (black / white / soft pink blush).
+   Maroon stays as the brand accent in a few key places.
+   Change a value here and the whole site follows. */
+:root {
+  --white: #f4efec;                    /* warm off-white (was #f8f8f6) */
+  --pink: #ffb3b8;                     /* soft pink, same as chatbot links */
+  --pink-line: rgba(255,179,184,.45);  /* pink for borders / rings */
+  --maroon: #800000;
+  --gray-1: #121011;                   /* black with a hint of warmth */
+  --gray-2: #1c1819;
+}
+
+/* Hero headline: first line off-white, second line stays maroon */
+.hero-title .block:first-child { color: var(--white); }
+
+/* "Get Yours" buttons:
+   hero  -> soft pink
+   nav + drawer -> stay maroon
+   pricing button -> already white (uses --white) */
+.btn-primary { background: var(--pink); color: #1a0a0c; }
+.btn-primary:hover {
+  background: #ffc6ca;
+  color: #1a0a0c;
+  box-shadow: 0 20px 60px rgba(255,179,184,.25);
+}
+/* fix: drawer button text turned maroon-on-maroon on hover/tap */
+.nb-drawer .nb-drawer-cta:hover { color: #fff; }
+
+/* Small details -> pink */
+.nb-brand { background: linear-gradient(90deg, #ffffff 0%, #f4efec 60%, var(--pink) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.nb-drawer a:hover { color: var(--pink); }
+.section-label::before { background: var(--pink); }
+.service-card:hover, .why-card:hover { border-color: var(--pink-line); }
+.feature-item:hover .feature-icon { border-color: var(--pink-line); }
+.faq-trigger.active .faq-plus { color: var(--pink); }
+.review-stars { color: var(--pink); }
+.field input:focus, .field textarea:focus { border-color: var(--pink); }
+.step-num { border-color: var(--pink-line); color: var(--pink); }
+.problem-num { color: var(--pink); }
+.pricing-includes li::before { background: var(--pink); }
+.contact-val a:hover { border-color: var(--pink); }
+.vbtn:hover, .vbtn.active { border-color: var(--pink-line); color: var(--pink); }
+
+/* About: role text was dark maroon on black (hard to read) -> pink.
+   .about-section prefix is needed because the About <style> sits lower in the page */
+.about-section .about-role { color: var(--pink); }
+
+/* Still maroon on purpose: nav "Get Yours", drawer button, hero "reimagined.",
+   heading underline, I.TRAXE column in the comparison table, SOS word,
+   LinkedIn hover, story block line, nav dot. */
+
+
+/* ── 2. PHONE VIEW — less "motu" ──────────────────────────────
+   Why it looked heavy: two ".section" padding rules existed
+   (64px, then 80px), and the 80px one won. Fixed below. */
+@media (max-width: 640px) {
+
+  /* sections + headings */
+  .section { padding: 48px 20px; }
+  .section-title { font-size: clamp(26px, 8vw, 30px); line-height: 1.1; margin-bottom: 14px; }
+  .section-sub { font-size: 13px; line-height: 1.7; margin-bottom: 28px; }
+  #how .section-sub, #features .section-sub { margin-bottom: 28px !important; }
+  #pricing .section-title { margin-bottom: 32px !important; }
+  .cmp-wrap { margin-top: 28px; }
+
+  /* hero */
+  .hero { min-height: auto; padding: 88px 20px 32px; }
+  .hero-title { font-size: clamp(32px, 9.5vw, 40px); margin-bottom: 18px; }
+  .hero-desc { font-size: 14px; line-height: 1.7; margin-bottom: 12px; }
+  .hero-tagline { margin-bottom: 26px; }
+  .hero-actions { gap: 16px; flex-wrap: wrap; }
+  .btn-primary { padding: 14px 24px; font-size: 12px; }
+  .hero-right { margin-top: 28px; }
+
+  /* cube viewer + buttons: smaller */
+  .viewer-wrap { gap: 12px; padding: 0; }
+  .cube-scene { transform: scale(.82); transform-origin: top center; margin-bottom: -43px; }
+  .viewer-btns { gap: 5px; }
+  .vbtn { padding: 6px 10px; font-size: 9px; letter-spacing: .1em; }
+
+  /* card gaps */
+  .services-grid, .why-cards, .reviews-grid { gap: 12px; }
+  .why-cards { margin-top: 28px; }
+
+  /* card padding */
+  .service-card { padding: 24px 20px; }
+  .service-icon { margin-bottom: 14px; }
+  .feature-item { padding: 22px 20px; }
+  .feature-icon { margin-bottom: 14px; }
+  .why-card { padding: 20px 18px; }
+  .why-sos { min-height: 96px; }
+  .sos-word { font-size: 48px; }
+  .review-card { padding: 22px 20px; }
+
+  /* paragraph text 13px */
+  .service-desc, .feature-desc, .why-card p, .problem-content p,
+  .step-desc, .review-text, .faq-answer, .pricing-includes li {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  /* problem section */
+  .problem-layout { gap: 28px; }
+  .crime-stat { max-width: 100%; padding: 22px 20px; }
+  .problem-item { padding: 20px 0; gap: 14px; grid-template-columns: 32px 1fr; }
+
+  /* how it works */
+  .steps-layout { gap: 28px; }
+  .steps-layout::before { left: 19px; top: 20px; bottom: 20px; }
+  .step-block, .step-block.has-media { grid-template-columns: 40px 1fr; gap: 14px; }
+  .step-num { width: 40px; height: 40px; font-size: 15px; }
+  .step-title { font-size: 17px; margin: 4px 0 8px; }
+
+  /* pricing */
+  .pricing-header { padding: 32px 20px; }
+  .pricing-body { padding: 28px 20px; }
+  .pricing-price { font-size: 60px; }
+  .pricing-price sup { font-size: 24px; margin-top: 12px; }
+  .pricing-includes { margin-bottom: 24px; }
+  .pricing-includes li { padding: 12px 0; }
+  .buy-now-btn { padding: 16px; font-size: 12px; }
+
+  /* faq, reviews, contact */
+  .faq-layout { gap: 24px; }
+  .faq-trigger { padding: 18px 0; font-size: 14px; }
+  .review-form { padding: 24px 20px; }
+  .review-form-title { font-size: 24px; margin-bottom: 24px; }
+  .review-empty-state { padding: 40px 20px; margin-bottom: 32px; }
+  .field { margin-bottom: 18px; }
+  .contact-layout { gap: 32px; }
+  .contact-item { padding: 18px 0; }
+
+  /* about (photos and LinkedIn links untouched; only spacing) */
+  .about-section .about-grid { gap: 12px; }
+  .about-section .about-card { padding-bottom: 24px; }
+  .about-section .about-photo { margin-bottom: 16px; }
+  .about-section .about-name { padding: 0 70px 0 20px; font-size: 18px; }
+  .about-section .about-role { padding: 0 70px 0 20px; }
+  .about-section .about-li { right: 20px; bottom: 26px; }
+  .about-section .about-story { margin-top: 32px; }
+
+  /* footer (specificity bumped: its <style> sits lower in the page) */
+  html footer.itx-footer { padding: 36px 20px 88px; }
+  footer.itx-footer .itx-f-cols { gap: 24px; }
+  footer.itx-footer .itx-f-social { margin-top: 24px; padding-top: 20px; }
+}
 </style>
 <script type="application/ld+json">
 [
