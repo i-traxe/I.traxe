@@ -2409,6 +2409,9 @@ footer {
 </script>
 </section>
 <style>
+  #phase2 {
+    padding: 48px 24px 0;
+  }
   #phase2 .phase2-box {
     max-width: 640px;
     margin: 0 auto;
@@ -2434,16 +2437,18 @@ footer {
     margin: 0 0 18px;
   }
   #phase2 .phase2-list li {
-    padding: 10px 0;
+    padding: 12px 0;
     border-bottom: 1px solid rgba(255,255,255,.08);
-    color: rgba(244,239,236,.8);
+    color: rgba(244,239,236,.85);
     font-size: 14px;
+    line-height: 1.6;
   }
+  #phase2 .phase2-list li:last-child { border-bottom: none; }
   #phase2 .phase2-price {
     font-size: 28px;
     font-weight: 700;
     color: var(--white);
-    margin: 4px 0 6px;
+    margin: 8px 0 6px;
   }
   #phase2 .phase2-note {
     font-size: 12px;
@@ -2466,11 +2471,13 @@ footer {
     text-transform: uppercase;
   }
   @media (max-width: 640px) {
+    #phase2 { padding: 40px 20px 0; }
     #phase2 .phase2-box { padding: 22px 18px; }
+    #phase2 .phase2-list li { font-size: 13px; }
   }
 </style>
 
-<section class="section" id="phase2">
+<section id="phase2">
   <div class="section-inner">
     <div class="section-label reveal" style="justify-content:center;">Phase 2</div>
     <h2 class="section-title reveal" style="text-align:center;">Next level <em>safety.</em></h2>
