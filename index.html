@@ -2143,92 +2143,251 @@ footer {
 
 <script>
 (function(){
- // ---- I.TRAXE chatbot: public info only ----
+  // ============ I.TRAXE chatbot: hardcoded answers ============
+  // Matching: lowercase, punctuation removed, repeated letters squashed (plsss -> pls, helloo -> helo).
+  // Emergency words are checked first. Otherwise the entry with the longest matched keyword wins.
+
+  function squash(s){
+    return String(s).toLowerCase()
+      .replace(/₹/g, " rs ")
+      .replace(/['’`,]/g, "")
+      .replace(/[^a-z0-9\u0900-\u097f ]+/g, " ")
+      .replace(/(.)\1+/g, "$1")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function hasKeyword(text, kw){
+    var k = squash(kw);
+    if(!k) return false;
+    if(/[\u0900-\u097f]/.test(k)) return text.indexOf(k) !== -1;
+    return (" " + text + " ").indexOf(" " + k + " ") !== -1;
+  }
+
+  var EMERGENCY = [
+    "emergency","bachao","madad chahiye","madad","danger","khatra","unsafe","koi peeche",
+    "follow kar raha","stalk","stalking","attack","harass","harassment","chhed","molest",
+    "kidnap","police","112","dar lag raha","please help","pls help","plz help","help please","sos bhejo"
+  ];
+
+  var EMERGENCY_ANSWER = "If you are in danger right now, call 112 (India's emergency number) immediately. If it is safe to do so, press the SOS button on your keychain too. You can WhatsApp us at +91 8073067935 later for help with the device.";
+
   var KB = [
     {
       id: "greet",
-      keywords: ["hello", "hola", "namaste", "good morning", "good evening", "good afternoon"],
-      answer: "Hey! I can help with price, how it works, SIM, battery and ordering. What do you wanna know?"
+      keywords: ["hi","hii","hiii","hey","heyy","hello","helo","hlo","hola","namaste","namaskar","yo","sup","wassup","whats up","what's up","whats good","good morning","good evening","good afternoon","how are you","how r u","how r you","kaise ho","kaise hain","kaise h","kya haal","kya hal","wyd","wbu","salam","assalamualaikum","can you help","help kar sakte","help kar sakti","hey there"],
+      answer: "Hey! 👋 I'm the I.TRAXE assistant. Ask me about the price, how it works, SIM, battery, orders, delivery, warranty, or anything about the product."
     },
     {
       id: "what",
-      keywords: ["what is", "wat is", "whats itraxe", "what's itraxe", "itraxe", "i.traxe", "about", "product", "who are you", "explain", "kya hai"],
-      answer: "I.TRAXE is a GPS safety keychain with a panda design. Press the SOS button and your live location goes by SMS to your trusted contact. No app needed on either side."
+      keywords: ["what is itraxe","what is i traxe","what is it","wat is it","wat is itraxe","what is this","whats this","what's this","itraxe kya hai","i traxe kya hai","ye kya hai","yeh kya hai","kya hai ye","kya hai yeh","ye kya h","what does it do","what do you sell","what do u sell","what do u do","what do you do","kya bechte ho","kya bechte hain","product kya hai","about product","about itraxe","tell me about","batao iske baare","iske baare","i.traxe","i traxe"],
+      answer: "I.TRAXE is a women's safety keychain with a cute panda design. Press the SOS button and your live location goes by SMS to your trusted contact. No app, no internet, and no smartphone needed on the receiver's side."
     },
     {
       id: "how",
-      keywords: ["how does it work", "how it works", "hw it works", "hw does it work", "how do i use", "how to use", "sos button", "trigger", "kaise kaam", "kaise use"],
-      answer: "Quick version:\n1) Hold the SOS button on the keychain.\n2) It picks up your live GPS location.\n3) Your trusted contact gets an SMS with a Google Maps link.\nYou set the trusted contact's number once and you're done."
+      keywords: ["how does it work","how it works","hw it works","hw does it work","how does this work","how do it work","how do i use","how do i use it","how to use","how to use it","how it functions","kaise kaam karta","kaise kaam karta hai","kaam kaise karta","kaise chalta","kaise chalta hai","kaise use karu","kaise use kare","use kaise karu","use kaise kare","kese kaam","kaise work","working kaise","how do i press","how to press","kaise press","kaise dabau","kaise dabaun"],
+      answer: "Here's the simple version:\n1. Press the SOS button on the keychain. No unlocking, no app.\n2. It finds your live location (GPS outdoors, cell tower indoors).\n3. Your trusted contact gets an SMS with a Google Maps link.\nYou set the trusted contact number once, and you're ready."
     },
     {
       id: "price",
-      keywords: ["price", "pricing", "cost", "how much", "hw much", "kitna", "kitne ka", "rate", "subscription"],
-      answer: "The device is ₹3,599, one-time. No subscription from us. You'll need your own SIM with an SMS pack for it to send alerts. To order, WhatsApp us: +91 8073067935."
+      keywords: ["price","prize","cost","kitna hai","kitna h","kitna lagega","kitne ka","kitne ka hai","kitne ka h","kitne ka hai ye","kitne ka hai yeh","kitne paise","kitne rupees","kitne rs","paise","rs","rupees","how much","how much is it","how much does it cost","hw much","mehenga","mehenga hai","sasta","sasta hai","budget","worth","worth it","is it worth","value for money","expensive","cheap","pricing","price list","price kya hai","price kitna","rate kya hai","3599","rs 3599"],
+      answer: "The I.TRAXE Safety Keychain costs ₹3,599, one-time. There's no subscription from us. You only need your own SIM with an SMS pack, which usually costs about ₹99 to ₹199 a month from your telecom provider. To order, WhatsApp +91 8073067935."
+    },
+    {
+      id: "subscription",
+      keywords: ["subscription","subscriptions","monthly","monthly charge","monthly charges","monthly fee","monthly payment","monthly kitna","monthly kitne","per month","every month","har mahine","har mahine","mahine ka","mahine ka kitna","recurring","hidden charges","hidden fees","extra charges","extra cost","annual","yearly","renewal","renew","ongoing cost","maintenance","maintenance cost"],
+      answer: "There's no subscription or monthly fee from I.TRAXE. The device is a one-time ₹3,599 purchase. The only ongoing cost is your own SIM plan with an SMS pack, around ₹99 to ₹199 a month from your telecom provider."
     },
     {
       id: "order",
-      keywords: ["order", "buy", "purchase", "where to buy", "kaise kharide", "kharidna", "get yours", "payment", "pay"],
-      answer: "Ordering is simple, just message us on WhatsApp: +91 8073067935. The team will take it from there."
+      keywords: ["order","orders","order kaise","order kaise karu","order kaise kare","order karna","order karna hai","how to order","how do i order","how can i order","place order","order now","order karu","order kar sakta","order kar sakti","buy","buying","buy karna","buy karu","buy kaise","kaise buy","purchase","kaise kharidu","kharidna","kharidna hai","kharidu","kaise lu","kaise lun","kahan se lu","kahan se lun","kahan milega","kahan milta","where to buy","where can i buy","where do i buy","get yours","want to buy","want one","mujhe chahiye","lena hai","lena h","lena chahta","lena chahti","book karna","book kar do","book karu","book now","buy now","wanna buy","i wanna buy"],
+      answer: "Ordering is easy. Just WhatsApp us at +91 8073067935, and the team will confirm your order and details with you. You can also email i.traxe.23@gmail.com."
     },
     {
-      id: "sim",
-      keywords: ["sim", "sim card", "jio", "airtel", "bsnl", "carrier", "sms pack", "which network"],
-      answer: "It needs a working 4G SIM with an SMS pack. Jio, Airtel and Vi work. BSNL isn't recommended because its coverage is limited in many areas. Not sure if a SIM comes with the device? Ask the team on WhatsApp: +91 8073067935."
-    },
-    {
-      id: "battery",
-      keywords: ["battery", "charge", "charging", "usb", "type-c", "type c", "standby", "charger"],
-      answer: "Standby is up to about 24 hours on a full charge. It charges with any USB Type-C charger. The charger isn't included in the box."
-    },
-    {
-      id: "coverage",
-      keywords: ["network", "signal", "coverage", "no network", "low network", "remote area", "everywhere", "reliable", "does it actually work", "work in", "emergency", "112", "police"],
-      answer: "It runs on the mobile network, so it needs signal and an active SIM with an SMS pack. Delivery of the alert can't be guaranteed in every location. Think of it as an extra layer of safety, and call 112 whenever you can."
-    },
-    {
-      id: "no-app",
-      keywords: ["need an app", "app needed", "app required", "internet", "wifi", "mobile data", "smartphone", "phone needed"],
-      answer: "No app needed. It works over the mobile network (SMS), not wifi or mobile data. Your trusted contact just gets a normal SMS with a Google Maps link, so any phone works."
-    },
-    {
-      id: "team",
-      keywords: ["founder", "who made", "who built", "who started", "team", "samar", "latifa", "ceo"],
-      answer: "I.TRAXE is built in Bengaluru by Samar Zayyan (Founder & CEO) and Latifa Iram (Co-founder & CCO). You can meet the team in the About section of this page."
+      id: "payment",
+      keywords: ["payment","payments","pay","pay kaise","kaise pay","payment kaise","payment method","payment options","payment option","upi","cod","cash on delivery","pay on delivery","online payment","card payment","card se","emi","emi hai","installment","installments","paytm","gpay","phonepe","net banking","netbanking","kaise dena","paise kaise"],
+      answer: "I'm not fully sure about all the payment options (like UPI, COD or EMI), so please check with the team. WhatsApp +91 8073067935 and they will guide you through payment for your order."
     },
     {
       id: "delivery",
-      keywords: ["delivery", "deliver", "shipping", "dispatch", "kitne din", "how many days", "when will i get", "kab milega"],
-      answer: "Delivery time depends on your location, so the team confirms it when you order. Want to connect with them? WhatsApp: +91 8073067935."
+      keywords: ["delivery","deliver","delivered","shipping","shipping charges","delivery charges","delivery kab","dispatch","courier","kitne din","kitne din lagenge","kitne din lagega","kab milega","kab aayega","kab tak milega","kab tak aayega","aayega kab","milega kab","how many days","when will i get","when will it arrive","when will it come","how long for delivery","delivery time","free delivery","delivery kahan","deliver karte ho","deliver karoge","deliver hoga","pincode","outside india","international","abroad","bahar bhejoge","delivery area"],
+      answer: "Delivery time and charges depend on your city, and the team confirms them when you order. WhatsApp +91 8073067935 or email i.traxe.23@gmail.com to check your city. I'm not sure about shipping outside India, so please ask the team too."
     },
     {
-      id: "policy",
-      keywords: ["refund", "return", "exchange", "cancel", "money back", "warranty", "damage", "broken", "defect", "repair"],
-      answer: "For refund and warranty details, the team shares the exact terms for your order directly. Want to connect with them? WhatsApp: +91 8073067935."
+      id: "sim",
+      keywords: ["sim","sim card","sim kaun","sim kaunsi","sim kaunsa","which sim","which sim card","konsi sim","kaunsi sim","kaunsa sim","sim chahiye","sim lagana","sim dalna","sim daalna","sim kahan","sim included","sim included hai","sim milega","sim mil jayegi","sim provide","nano sim","4g","5g","which network","konsa network","kaunsa network","jio","airtel","vi","vodafone","bsnl","bsnl chalega","sms pack","sms plan","recharge","recharge kaise","plan kaunsa","kaunsa plan","which plan","plan chahiye","validity","sim plan","telecom","carrier"],
+      answer: "The device needs your own 4G nano SIM with an SMS pack. The SIM is not included in the box. Airtel, Jio and Vi give the best signal, while BSNL coverage can be weak in some areas."
     },
     {
-      id: "bot",
-      keywords: ["are you a bot", "are u a bot", "real person", "are you real", "are you human", "who am i talking"],
-      answer: "I'm an automated helper with ready answers about I.TRAXE, not a live person. For anything I can't answer, the team is on WhatsApp: +91 8073067935."
+      id: "battery",
+      keywords: ["battery","batter","battery life","battery backup","battery kitni","battery kitne","battery kitna","battery kitna chalta","battery kitna chalega","how much battery","how long battery","battery kitni der","battery kitne din","kitne din chalega","kitne ghante","kitne ghante chalega","ghante chalega","kitni der chalega","24 hours","24 ghante","hours chalega","standby","stand by","standby time","mah","2500","2500mah","last kitna","chalega kitne","backup kitna","chalta kitna","kitna chalta","kitne time chalega"],
+      answer: "The battery is a 2500mAh rechargeable Li-Po. It gives up to about 24 hours of standby on a full charge, and it takes about 3 to 4 hours to charge via USB-C."
+    },
+    {
+      id: "charging",
+      keywords: ["charge","charging","charger","chargers","charge kaise","kaise charge","charge kaise karu","charge karna","charge karu","usb","usb c","usb type c","type c","type-c","cable","cable included","charger included","charger milega","charger kaunsa","charger chahiye","adapter","adaptor","plug","wall charger","power bank","powerbank","fast charging","charging time","charging kaise","charging kitni","charging kitne ghante","phone charger","mobile charger","box me kya hai","box mein kya","in the box","whats in the box","what is in box","kya milega"],
+      answer: "It charges through the USB-C port, and the USB-C cable is included. The wall adapter is not included, so you can use any USB Type-C charger you already have. Charging takes about 3 to 4 hours.\n\nIn the box: the I.TRAXE Panda Keychain and the USB-C cable. The SIM card is not included."
+    },
+    {
+      id: "coverage",
+      keywords: ["network","network nahi","network nahi hai","network nahi aa raha","no network","low network","no signal","signal","signal nahi","signal nahi aata","signal kam","coverage","range","kaam karega","kaam karega kya","kaam karega na","chalega kya","chalega na","work karega","work karega kya","works everywhere","everywhere","remote","village","gaon","basement","underground","metro","reliable","reliability","kitna reliable","accurate","bharosa","guarantee","guarantee hai","guaranteed","always work","pakka kaam karega","pakka chalega","sach me kaam karega","real me kaam","does it actually work","will it work","does it work"],
+      answer: "It works over the mobile network, so you need a signal and an active SIM with an SMS pack, since the alert goes by SMS. I can't promise delivery in every spot, so think of it as an extra layer of safety, not the only one. In an emergency, always call 112 too."
+    },
+    {
+      id: "noapp",
+      keywords: ["app","apps","app chahiye","app download","app kaise","app needed","need app","need an app","app required","play store","internet","internet chahiye","internet needed","need internet","wifi","wi fi","wifi chahiye","mobile data","data chahiye","smartphone","smart phone","phone chahiye","need phone","phone needed","bina phone","without phone","no phone","without internet","bina internet","bina app","without app","no app","bluetooth","net chahiye","bina net","phone"],
+      answer: "No app and no internet needed. It works over the mobile network (SMS), not WiFi or mobile data. Your trusted contact just gets a normal SMS with a Google Maps link, so any phone can receive it, even a basic keypad phone."
+    },
+    {
+      id: "gps",
+      keywords: ["gps","gps kaam","gps kaise","gps accurate","indoor","indoors","indoor kaam","andar","andar kaam","ghar ke andar","inside building","building","location accurate","location kaise","accurate location","location exact","exact location","live location","location kaise bhejta","how location works","tower","cell tower","tower location","location sahi","location milegi","location nahi","location galat"],
+      answer: "Outdoors it uses GPS for your exact spot. Indoors, where GPS is weak, it uses cell tower location, so a location still goes out. Accuracy can be lower indoors than outdoors."
+    },
+    {
+      id: "sos",
+      keywords: ["sos","sos button","sos kaise","sos kaise bhejte","sos dabana","sos dabao","sos press","sos kaise press","button","press","trigger","one press","single press","press karna","press kaise","press karu","kaise dabayein","dabana","dabaun","kaise dabau","dabao","panic button","alarm"],
+      answer: "One press of the SOS button sends the alert. You don't need to unlock your phone or open any app, so you can press it from your pocket or bag. The SMS goes out to your trusted contact within seconds."
+    },
+    {
+      id: "setup",
+      keywords: ["setup","set up","set up kaise","setup kaise","setup kaise karu","setup kaise kare","setup karna","setting","settings","settings kaise","configure","configure kaise","install","installation","activate","activation","activate kaise","activate karna","start kaise","first time","pehli baar","instructions","manual","user guide","guide","steps","setup help","setup support","set karna","set kaise","how to setup","how to set up","kaise set","kaise set up","number set","number kaise set","number kaise add","number add","add number","number daalna","number dalna","contact set","contact kaise add","contact add kaise"],
+      answer: "Setup is simple: insert your SIM, charge the device, and set your trusted contact number. If you get stuck, the team gives setup help on WhatsApp and email. We recommend testing SOS with your trusted contact first, so you know it works."
+    },
+    {
+      id: "trusted",
+      keywords: ["trusted contact","trusted contacts","trusted number","trusted person","emergency contact","emergency contacts","kitne contact","kitne contacts","how many contacts","multiple contacts","more contacts","2 contacts","two contacts","2 number","two numbers","ek se zyada","more than one","family members","family ko","mummy ko","mama ko","papa ko","parents ko","parents ko bhejo","friend ko","dost ko","kise bhejega","kisko jayega","kise jayega","who gets alert","who receives","receiver","who will get","kon milega","kaun milega","kisko milega"],
+      answer: "The SOS alert goes to the trusted contact number you set up. That person receives an SMS with a Google Maps link, and they don't need an app. I'm not sure how many contacts the device supports, so please check with the team on WhatsApp at +91 8073067935."
+    },
+    {
+      id: "warranty",
+      keywords: ["warranty","warranty kitni","warranty kitne","warranty kab tak","warranty period","guarantee","guarantee hai","return","returns","return policy","refund","refunds","refund milega","replace","replacement","exchange","cancel","cancellation","cancel kar sakta","money back","paisa wapas","paise wapas","damage","damaged","damage aaya","broken","toot gaya","toota","toot","defect","defective","faulty","not working","kaam nahi","kaam nahi kar raha","kaam nahi karta","nahi chal raha","band ho gaya","band ho gya","kharab","kharab ho gaya","kharab hai","bekar","repair","repair kaise","claim","claim kaise","wrong item","galat item","galat aaya","galat product","dead ho gaya"],
+      answer: "We offer a 6-month warranty. If the device arrives damaged or stops working within 6 months, we replace it and cover the return shipping. To claim, WhatsApp +91 8073067935 or email i.traxe.23@gmail.com with your order details. For refund or cancellation questions, the team will confirm the exact terms for your order."
+    },
+    {
+      id: "bulk",
+      keywords: ["bulk","bulk order","bulk orders","bulk discount","bulk discounts","bulk price","bulk rate","bulk kitna","bulk me","bulk mein","bulk lena","bulk order karna","bulk quote","wholesale","quantity","pieces","pcs","units","10 pieces","50 pieces","100 pieces","college order","hostel order","school order","company order","corporate","corporate gift","corporate order","employees","employee","staff","group order","team order","family order","gift in bulk","bulk gift","lots of","quote","quote chahiye","college ke liye","school ke liye","company ke liye","hostel ke liye","office ke liye","employees ke liye"],
+      answer: "Yes, bulk orders are available, and bulk discounts apply. For a quote, WhatsApp +91 8073067935 with the quantity, your city, and the use case, like a college, company, or gift. You can also use the Bulk Orders form on this page."
+    },
+    {
+      id: "offers",
+      keywords: ["offer","offers","offer hai","offer kya hai","any offer","koi offer","offers hai","discount","discounts","discount milega","discount kitna","discount code","coupon","coupon code","coupons","promo","promo code","promocode","sale","sale hai","deal","deals","cashback","festival offer","diwali offer","new year offer","koi deal","deal hai","koi code","percent off","off milega","kitna off","concession"],
+      answer: "I don't have any current offer details to share here. For the latest deals, WhatsApp +91 8073067935. Bulk orders also get bulk discounts, so ask for a quote there."
+    },
+    {
+      id: "partnership",
+      keywords: ["reseller","resell","dealer","dealers","distributor","distributors","partnership","partner","partners","business partner","franchise","become seller","seller","sell your product","sell karna","retail","retailer","shop me rakhna","store me rakhna","supply","supplier","invest","investment","investor","investors","funding","fund","angel","shareholder","stake","collab","collaboration","tie up","tieup","affiliate","influencer","promotion","ambassador","brand deal","sponsor","sponsorship"],
+      answer: "For reseller, distributor, partnership, sponsorship, or investment talks, please email the team at i.traxe.23@gmail.com or WhatsApp +91 8073067935. They usually reply within 24 hours."
+    },
+    {
+      id: "phase2",
+      keywords: ["phase 2","phase2","phase two","phase 2 kya","phase 2 batao","phase 2 features","next version","next model","next gen","next generation","new version","new model","upgrade","upgraded","upgrades","next level","camera","cam","4k","4k camera","voice recorder","recorder","recording","audio","listen","sunna","sun sakte","call device","aas paas","aas paas ki awaaz","surrounding","surroundings","awaaz","premium features","more features","aur features","new features","coming soon","future features","roadmap","next product","next update","feature list","kya naya","naya kya","upcoming","upcoming feature"],
+      answer: "Phase 2 is the next version, and it's coming soon. It's not available to buy now. Planned features include a 4K camera, a voice recorder, and a feature where your trusted contact can call the device through SIM and listen to the surroundings, with your consent and privacy controls, plus more premium features. The indicative price is ₹7,999, and the final price will be announced at launch."
+    },
+    {
+      id: "waitlist",
+      keywords: ["waitlist","wait list","join waitlist","waitlist me","list me","list me daal","list mein daal","notify","notify me","notify karna","update chahiye","updates chahiye","alert me","launch","launch kab","launch date","launch kab hoga","kab launch","kab aayega phase","phase 2 kab aayega","when phase 2","phase 2 launch","pre order","preorder","pre-order","pre book","prebook","pre booking","reserve","reserve karna","phase 2 book","phase 2 buy","buy phase 2","phase 2 lena","phase 2 kharidna"],
+      answer: "Phase 2 isn't available to buy yet, and I don't have a launch date to share. To join the waitlist and get updates, WhatsApp +91 8073067935. The final price will be announced at launch."
+    },
+    {
+      id: "team",
+      keywords: ["founder","founders","co founder","cofounder","ceo","cco","who made","who built","who started","who created","who founded","who runs","who owns","owner","team","team members","team kaun","samar","latifa","samar zayyan","latifa iram","kaun banaya","kisne banaya","kisne shuru","founder kaun","company kahan","company kaha","company kaha hai","kaha ki company","kahan ki company","based in","based where","bengaluru","bangalore","bengaluru company","bangalore company","where are you from","where r u from","where are you based","startup","start up","company kya hai","kaun si company","which company","company"],
+      answer: "I.TRAXE is a Bengaluru-based startup. Samar Zayyan is the Founder & CEO, and Latifa Iram is the Co-founder & CCO. You can see the full team in the About Us section of this page."
+    },
+    {
+      id: "legal",
+      keywords: ["legal","legal hai","legal entity","registered","registration","registered company","company registered","pvt ltd","pvt","private limited","gst","gst number","gst bill","invoice","gst invoice","tax invoice","cin","certificate","certified","certification","certifications","bis","iso","fcc","approved","government approved","license","licence","compliance","compliance documents","trademark","patent"],
+      answer: "I.TRAXE Private Limited is the registered company behind the product. For invoices, certificates, or other compliance documents, please contact the team on WhatsApp at +91 8073067935 or email i.traxe.23@gmail.com."
     },
     {
       id: "contact",
-      keywords: ["contact", "email", "whatsapp", "reach", "phone number", "number", "get in touch", "talk to someone", "call you"],
-      answer: "You can reach the team on WhatsApp at +91 8073067935 or email i.traxe.23@gmail.com."
+      keywords: ["contact","contact us","contact number","contact kaise","contact karna","contact karu","contact details","contact info","email","email id","mail","mail id","mail karu","mail kar sakta","email kar sakta","gmail","whatsapp","whatsapp number","whatsapp karu","whatsapp kar sakta","number do","number kya hai","number dedo","phone number","call karna","call kar sakta","call karu","reach","reach you","reach out","get in touch","talk to someone","baat karni","baat karna","baat kar sakta","team se baat","customer care","customer support","helpline","complaint","complain","help desk","helpdesk","kaise contact","kaise baat","kaise sampark","sampark"],
+      answer: "You can reach the team on WhatsApp at +91 8073067935 or email i.traxe.23@gmail.com. They usually reply within 24 hours."
+    },
+    {
+      id: "bot",
+      keywords: ["are you bot","are u bot","are you a bot","bot ho","bot hai","bot","are you real","are u real","real person","real insaan","human","are you human","are u human","insaan ho","insaan hai","insaan","robot","robot ho","ai","are you ai","are u ai","ai ho","ai hai","tum ai ho","tu ai hai","chatgpt","gpt","claude","gemini","openai","anthropic","who are you","who r u","who are u","tum kaun ho","aap kaun ho","tu kaun hai","kon ho","kaun bol raha","what are you","what r u"],
+      answer: "I'm an AI assistant for I.TRAXE, not a live person. I can answer common questions about the product. For anything specific, the team is on WhatsApp at +91 8073067935."
+    },
+    {
+      id: "safety",
+      keywords: ["is it safe","safe hai","safe h","safe or not","kya ye safe","kya yeh safe","kya safe hai","radiation","radiation hai","harmful","harm","nuksan","nuksaan","side effects","health","health risk","health ke liye","khatarnak","khatarnaak","safe for body","body ke liye","allergy","allergic","chemical","chemicals","battery blast","blast","fire","aag","overheat","overheating","explode","explosion","burn","burning"],
+      answer: "I'm not able to give medical advice. For battery or device safety questions, please check with the team on WhatsApp at +91 8073067935. If it's a health concern, please consult a doctor."
+    },
+    {
+      id: "trust",
+      keywords: ["fake","fake hai","fake to nahi","scam","scam hai","fraud","fraud hai","real or fake","genuine","original","original hai","authentic","legit","legit hai","trust","trust kaise","bharosa","bharosa hai","bharosa kar sakte","kya bharosa","cheat","cheating","dhoka","dhokha","duplicate","chinese","made in china","fake product","fake brand","real product","real product hai","kya ye real","kya ye genuine","asli hai","asli","nakli","nakli hai","trust karu","trust kar sakte","trustworthy","reliable hai"],
+      answer: "We're a registered company, I.TRAXE Private Limited. You can check the founders' LinkedIn profiles in the About Us section, and our Instagram and YouTube links are in the footer. Deal only with our official WhatsApp +91 8073067935 or email i.traxe.23@gmail.com, and don't trust messages from other numbers claiming to be I.TRAXE."
+    },
+    {
+      id: "privacy",
+      keywords: ["privacy","privacy policy","data","my data","personal data","data safe","data safe hai","data kaha jata","data kahan jata","data store","data share","data sell","data leak","location store","location save","location stored","kaun dekh sakta","kaun dekh sakti","who can see","who can track","tracking","track me","tracking history","location history","data security","secure","security","secure hai"],
+      answer: "Your location is shared only when you press SOS, and only with the trusted contact you set up. For full details, read our Privacy Policy at itraxe.in/privacy.html. For questions about your data, WhatsApp or email the team."
+    },
+    {
+      id: "terms",
+      keywords: ["terms","terms and conditions","terms conditions","terms of use","t and c","t&c","tnc"],
+      answer: "You can read the full Terms & Conditions at itraxe.in/terms.html. For anything not covered there, WhatsApp +91 8073067935."
+    },
+    {
+      id: "reviews",
+      keywords: ["review","reviews","review kaise","review kaise dekhu","review dekhna","review dena","review likhna","review likh sakta","review do","review de sakta","review de sakti","review kahan","rating","ratings","testimonial","testimonials","feedback","feedbacks","customer review","customer reviews","people say","log kya bolte","log kya kehte","experience","user experience","is it good","is this good","good product","product quality","quality","quality kaisi","product kaisa hai","worth buying","honest review","real reviews","customers kya bolte"],
+      answer: "You can read customer reviews in the Reviews section of this page, and you can leave your own review there too. You can also check our Instagram and YouTube for more."
+    },
+    {
+      id: "why",
+      keywords: ["why buy","why should i buy","why should i","why buy itraxe","kyun lu","kyu lu","kyun lun","kyu lun","kyun kharidu","kyu kharidu","why itraxe","why different","different","different kya hai","what makes it different","better than","better kya hai","vs","versus","compare","comparison","alternative","alternatives","safety app","panic button","sos app","kya fark hai","fark kya hai","difference","benefit","benefits","advantage","advantages","fayda","faydey","fayde","zarurat","zaroorat","kyun chahiye","why need","need kyun","need kya hai","smartwatch","smart watch"],
+      answer: "Most safety apps need an unlocked, internet-connected phone, and panic buttons can be noticed. I.TRAXE is a keychain: one press, no app, no internet, and it works even if your phone is dead or out of reach. It also looks like a normal keychain. You can see the full comparison in the 'Why I.TRAXE Is Different' section."
+    },
+    {
+      id: "forwho",
+      keywords: ["for who","who is it for","who is this for","for whom","kiske liye","kiske liye hai","kiske liye hai ye","kis ke liye","kis liye","college girls","college girl","working women","working woman","solo travel","solo travellers","travel alone","travelling alone","travel akele","akeli","akele","alone","raat","raat ko","night","night travel","late night","cab","cab ride","cab me","cab ke liye","commute","hostel","pg","gift","gift idea","gift for","gift lena","birthday gift","rakhi","mom ke liye","mother ke liye","bahen ke liye","behen ke liye","didi ke liye","beti ke liye","girlfriend ke liye","dost ke liye","friend ke liye","sister ke liye"],
+      answer: "It's made for college girls, working women, women living alone, and anyone who travels late at night or takes cab rides alone. It's also a thoughtful gift for a mom, sister, daughter, or friend."
+    },
+    {
+      id: "look",
+      keywords: ["looks like","look","looks","look kaisa","kaisa dikhta","kaisa dikhega","dikhta kaisa","design","design kaisa","panda","panda keychain","cute","cute hai","disguise","discreet","hidden","chhupa","chhupa hua","obvious","suspicious","pehchan","normal keychain","keychain look","dekhne mein","kaisa dikhta hai","how does it look","how it looks","what does it look like","dikhega kaisa","appearance"],
+      answer: "It looks like a cute panda keychain, so it stays discreet. Nobody has to know it's a safety device, and that's the point."
+    },
+    {
+      id: "specs",
+      keywords: ["colour","color","colours","colors","rang","kaunsa color","kaunse color","kaunsa rang","kaunse rang","black","white","pink","size","size kitna","size kya hai","dimensions","weight","kitna bhaari","weight kitna","waterproof","water proof","paani","barish","water resistant","water resistance","durable","durability","shockproof","dropproof","tough","specs","specifications","spec sheet","technical specs","full specs"],
+      answer: "I don't have full details on water resistance, exact size, weight, or colour options to share right now. For the exact specs, please ask the team on WhatsApp at +91 8073067935."
+    },
+    {
+      id: "choose",
+      keywords: ["confused","confuse","idk","i dont know","dont know","pata nahi","samajh nahi","samajh nahi aa raha","not sure","decide","decide nahi","decision","dilemma","kya lu","kya lun","kya lu bhai","kaun sa lu","kaunsa lu","kaunsa lun","kaun sa lun","which one","which model","which variant","what should i buy","what should i get","kya lena chahiye","suggest","suggest karo","suggest kar do","recommend","recommendation","recommend karo","help me choose","help choose","best option","best kaunsa"],
+      answer: "Quick version: I.TRAXE is one device, ₹3,599 one-time, and it needs your own SIM with an SMS pack. A Phase 2 version is coming later, but it's not available now. For help choosing or for a gift, WhatsApp +91 8073067935 and the team will guide you."
+    },
+    {
+      id: "bye",
+      keywords: ["bye","byee","byeee","bye bye","see you","see ya","see u","cya","ttyl","tata","alvida","good night","gn","goodbye","good bye","chalo bye","bye bro","take care","ok bye","chal bye","phir milte","milte hain","bye ji"],
+      answer: "Bye! Take care and stay safe. 💜 I'm here anytime you have questions about I.TRAXE."
+    },
+    {
+      id: "thanks",
+      keywords: ["thanks","thank you","thank u","thanku","thankyou","thx","thnx","ty","tysm","shukriya","shukriya bhai","dhanyavaad","dhanyawad","dhanyawaad","dhanywad","ok","okay","k","kk","okk","okok","cool","nice","great","awesome","sahi hai","theek hai","thik hai","achha","acha","accha","done","bet","fr","fr fr","bro thanks","thanks bro"],
+      answer: "You're welcome! 😊 Anything else you'd like to know about I.TRAXE?"
     }
   ];
- 
-  var FALLBACK = "Hmm, I'm not sure about that one yet. Easiest is to ask the team directly. Want to connect? WhatsApp: +91 8073067935 or email i.traxe.23@gmail.com.";
- 
-  var SUGGESTIONS = ["What is I.TRAXE?", "How does it work?", "What's the price?", "How do I order?"];
- 
 
-  function findAnswer(text){
-    var q = text.toLowerCase();
+  var FALLBACK = "Hmm, I don't have an answer for that one yet. I can help with I.TRAXE questions like price, how it works, SIM, battery, charging, orders, delivery, warranty, and Phase 2. For anything else, the team is on WhatsApp at +91 8073067935 or email i.traxe.23@gmail.com.";
+
+  var SUGGESTIONS = ["What is I.TRAXE?", "How does it work?", "Price?", "How do I order?", "Battery?", "Warranty?"];
+
+  function findAnswer(raw){
+    var text = squash(raw);
+    if(!text) return FALLBACK;
+
+    // Safety first: emergency words always win
+    for(var e = 0; e < EMERGENCY.length; e++){
+      if(hasKeyword(text, EMERGENCY[e])) return EMERGENCY_ANSWER;
+    }
+
     var best = null, bestScore = 0;
     KB.forEach(function(entry){
       var score = 0;
       entry.keywords.forEach(function(k){
-        if(q.indexOf(k) !== -1) score += k.split(" ").length;
+        if(hasKeyword(text, k)) score += squash(k).length;
       });
       if(score > bestScore){ bestScore = score; best = entry; }
     });
@@ -2279,7 +2438,7 @@ footer {
   launcher.addEventListener('click', function(){
     panel.classList.toggle('itx-open');
     if(panel.classList.contains('itx-open') && messages.childElementCount === 0){
-      addMessage("Hi! I'm the I.TRAXE assistant, ask me about the product, pricing, how it works, or anything else.", 'bot');
+      addMessage("Hi! I'm the I.TRAXE assistant. Ask me about the product, pricing, how it works, or anything else about I.TRAXE.", 'bot');
       renderChips();
     }
   });
