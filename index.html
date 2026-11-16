@@ -819,6 +819,15 @@ body.hovering #cursor { width: 48px; height: 48px; }
 .cmp-y { color: #3ecf8e; font-weight: 600; }
 .cmp-n { color: #ff6b6b; font-weight: 600; }
 .cmp-p { color: #c9c9c9; font-weight: 500; }
+.cmp-ic {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+}
+.cmp-y .cmp-ic, .cmp-n .cmp-ic { transition: transform .25s ease; }
+.cmp-table tbody tr:hover .cmp-ic { transform: scale(1.12); }
+@media (max-width: 640px) { .cmp-ic { width: 19px; height: 19px; } }
 .cmp-note {
   font-size: 12px;
   line-height: 1.7;
@@ -1862,6 +1871,14 @@ footer {
     <p class="section-sub reveal" style="margin-bottom:0;">Safety apps, smart watches and panic buttons each solve part of the problem. Here is how I.TRAXE compares.</p>
 
     <div class="cmp-wrap reveal">
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ic-yes" viewBox="0 0 24 24">
+    <path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="ic-no" viewBox="0 0 24 24">
+    <path d="M6.5 6.5l11 11M17.5 6.5l-11 11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+  </symbol>
+</svg>
       <table class="cmp-table">
         <thead>
           <tr>
@@ -1872,14 +1889,50 @@ footer {
             <th>Panic button</th>
           </tr>
         </thead>
-        <tbody>
-          <tr><td>Phone-independent</td><td class="cmp-us cmp-y">Yes</td><td class="cmp-n">No</td><td class="cmp-n">No</td><td class="cmp-y">Yes</td></tr>
-          <tr><td>Works without mobile data</td><td class="cmp-us cmp-y">Yes</td><td class="cmp-n">No</td><td class="cmp-p">Partial</td><td class="cmp-n">No</td></tr>
-          <tr><td>GPS location to contacts</td><td class="cmp-us cmp-y">Yes</td><td class="cmp-y">Yes</td><td class="cmp-y">Yes</td><td class="cmp-n">No</td></tr>
-          <tr><td>Single-press SOS</td><td class="cmp-us cmp-y">Yes</td><td class="cmp-n">No</td><td class="cmp-p">Partial</td><td class="cmp-y">Yes</td></tr>
-          <tr><td>Discreet keychain design</td><td class="cmp-us cmp-y">Yes</td><td class="cmp-p">n/a</td><td class="cmp-n">No</td><td class="cmp-p">Partial</td></tr>
-          <tr><td>Under ₹5,000</td><td class="cmp-us cmp-y">Yes</td><td class="cmp-p">Free*</td><td class="cmp-n">No</td><td class="cmp-y">Yes</td></tr>
-        </tbody>
+      <tbody>
+  <tr>
+    <td>Phone-independent</td>
+    <td class="cmp-us cmp-y"><svg class="cmp-ic" role="img" aria-label="Yes"><use href="#ic-yes"/></svg></td>
+    <td class="cmp-n"><svg class="cmp-ic" role="img" aria-label="No"><use href="#ic-no"/></svg></td>
+    <td class="cmp-n"><svg class="cmp-ic" role="img" aria-label="No"><use href="#ic-no"/></svg></td>
+    <td class="cmp-y"><svg class="cmp-ic" role="img" aria-label="Yes"><use href="#ic-yes"/></svg></td>
+  </tr>
+  <tr>
+    <td>Works without mobile data</td>
+    <td class="cmp-us cmp-y"><svg class="cmp-ic" role="img" aria-label="Yes"><use href="#ic-yes"/></svg></td>
+    <td class="cmp-n"><svg class="cmp-ic" role="img" aria-label="No"><use href="#ic-no"/></svg></td>
+    <td class="cmp-p">Partial</td>
+    <td class="cmp-n"><svg class="cmp-ic" role="img" aria-label="No"><use href="#ic-no"/></svg></td>
+  </tr>
+  <tr>
+    <td>GPS location to contacts</td>
+    <td class="cmp-us cmp-y"><svg class="cmp-ic" role="img" aria-label="Yes"><use href="#ic-yes"/></svg></td>
+    <td class="cmp-y"><svg class="cmp-ic" role="img" aria-label="Yes"><use href="#ic-yes"/></svg></td>
+    <td class="cmp-y"><svg class="cmp-ic" role="img" aria-label="Yes"><use href="#ic-yes"/></svg></td>
+    <td class="cmp-n"><svg class="cmp-ic" role="img" aria-label="No"><use href="#ic-no"/></svg></td>
+  </tr>
+  <tr>
+    <td>Single-press SOS</td>
+    <td class="cmp-us cmp-y"><svg class="cmp-ic" role="img" aria-label="Yes"><use href="#ic-yes"/></svg></td>
+    <td class="cmp-n"><svg class="cmp-ic" role="img" aria-label="No"><use href="#ic-no"/></svg></td>
+    <td class="cmp-p">Partial</td>
+    <td class="cmp-y"><svg class="cmp-ic" role="img" aria-label="Yes"><use href="#ic-yes"/></svg></td>
+  </tr>
+  <tr>
+    <td>Discreet keychain design</td>
+    <td class="cmp-us cmp-y"><svg class="cmp-ic" role="img" aria-label="Yes"><use href="#ic-yes"/></svg></td>
+    <td class="cmp-p">n/a</td>
+    <td class="cmp-n"><svg class="cmp-ic" role="img" aria-label="No"><use href="#ic-no"/></svg></td>
+    <td class="cmp-p">Partial</td>
+  </tr>
+  <tr>
+    <td>Under ₹5,000</td>
+    <td class="cmp-us cmp-y"><svg class="cmp-ic" role="img" aria-label="Yes"><use href="#ic-yes"/></svg></td>
+    <td class="cmp-p">Free*</td>
+    <td class="cmp-n"><svg class="cmp-ic" role="img" aria-label="No"><use href="#ic-no"/></svg></td>
+    <td class="cmp-y"><svg class="cmp-ic" role="img" aria-label="Yes"><use href="#ic-yes"/></svg></td>
+  </tr>
+</tbody>
       </table>
     </div>
     <p class="cmp-note reveal">*Free to download, but depends on an unlocked, internet-connected smartphone. I.TRAXE needs a SIM card and cellular (SMS) coverage. Comparison is based on typical products in each category; features vary by model.</p>
