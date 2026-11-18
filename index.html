@@ -1844,25 +1844,173 @@ footer {
   </div>
 </section>
 
-<!-- FEATURES -->
+<!-- FEATURES (bento) -->
 <section class="section" id="features">
+  <style>
+  #features{--fcard:#121011;--fline:rgba(255,255,255,.09);--fmu:#9a9291;--fpk:#ffb3b8;--fmr:#800000}
+  #features .bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(222px,auto);gap:14px}
+  #features .bc{background:var(--fcard);border:1px solid var(--fline);border-radius:14px;padding:24px;position:relative;overflow:hidden;transition:border-color .3s,transform .35s cubic-bezier(.2,.7,.2,1)}
+  #features .bc::before{content:"";position:absolute;inset:0;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(255,179,184,.09),transparent 70%);opacity:0;transition:opacity .3s;pointer-events:none}
+  #features .bc:hover{border-color:rgba(255,179,184,.4);transform:translateY(-3px)}
+  #features .bc:hover::before{opacity:1}
+  #features .bc h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--white)}
+  #features .bc p{font-size:13.5px;line-height:1.6;color:var(--fmu)}
+  #features .big{grid-column:span 2;grid-row:span 2;border-radius:26px;padding:34px;background:#170d0f}
+  #features .big h3{font-size:26px;letter-spacing:-.01em}
+  #features .big p{font-size:15px;max-width:26ch}
+  #features .wide{grid-column:span 2}
+  #features .v{display:block;height:74px;width:auto;margin-bottom:16px;color:var(--fpk);fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+  #features .mu{stroke:var(--fmu)}
+  #features .fl{fill:currentColor;stroke:none}
+  #features .patch{fill:currentColor;fill-opacity:.35;stroke:none}
+  #features .eye{fill:var(--white);stroke:none;transform-origin:50% 50%;transform-box:fill-box}
+
+  /* entrance */
+  #features .bento.in .bc{animation:fbup .7s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--i)*80ms)}
+  @keyframes fbup{from{opacity:0;transform:translateY(18px)}}
+
+  /* GPS card */
+  #features .map{position:absolute;inset:0;background-image:linear-gradient(var(--fline) 1px,transparent 1px),linear-gradient(90deg,var(--fline) 1px,transparent 1px);background-size:38px 38px;-webkit-mask-image:radial-gradient(circle at 72% 76%,#000 0,transparent 62%);mask-image:radial-gradient(circle at 72% 76%,#000 0,transparent 62%);pointer-events:none}
+  #features .rad{position:absolute;right:-40px;bottom:-40px;width:320px;height:320px;color:var(--fpk);pointer-events:none;fill:none;stroke:currentColor;stroke-width:.8}
+  #features .rad circle{transform-origin:50% 50%;transform-box:fill-box;opacity:0}
+  #features .bento.in .rad circle{animation:fbrr 3.6s ease-out infinite}
+  #features .rad circle:nth-child(2){animation-delay:1.2s!important}
+  #features .rad circle:nth-child(3){animation-delay:2.4s!important}
+  @keyframes fbrr{0%{transform:scale(.12);opacity:.85}100%{transform:scale(1);opacity:0}}
+  #features .pin{fill:var(--fpk);stroke:none}
+  #features .bento.in .pin{animation:fbdrop .9s cubic-bezier(.3,1.5,.5,1) .5s backwards}
+  @keyframes fbdrop{from{transform:translateY(-40px);opacity:0}}
+  #features .chip{position:absolute;left:34px;bottom:30px;display:flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--fline);border-radius:99px;font-size:12px;color:var(--white);font-variant-numeric:tabular-nums;background:#0e0a0b}
+  #features .chip i{width:7px;height:7px;border-radius:50%;background:var(--fpk);animation:fbblink 1.6s ease-in-out infinite}
+  @keyframes fbblink{50%{opacity:.25}}
+
+  /* No internet */
+  #features .bars rect{fill:currentColor;stroke:none;transform-origin:bottom;transform-box:fill-box}
+  #features .bento.in .bars rect{animation:fbbar 3.2s ease-in-out infinite}
+  #features .bars rect:nth-child(2){animation-delay:.18s!important}
+  #features .bars rect:nth-child(3){animation-delay:.36s!important}
+  #features .bars rect:nth-child(4){animation-delay:.54s!important}
+  @keyframes fbbar{0%,6%{transform:scaleY(.15);opacity:.35}35%,80%{transform:scaleY(1);opacity:1}100%{transform:scaleY(.15);opacity:.35}}
+  #features .dr path{stroke-dasharray:1;stroke-dashoffset:1}
+  #features .bento.in .dr path{animation:fbdraw .8s ease 1s forwards}
+  @keyframes fbdraw{to{stroke-dashoffset:0}}
+
+  /* Indoor */
+  #features .ping{stroke-dasharray:3 5}
+  #features .bento.in .ping{animation:fbflow 1.4s linear infinite}
+  @keyframes fbflow{to{stroke-dashoffset:-16}}
+  #features .ring{transform-origin:50% 50%;transform-box:fill-box;opacity:0}
+  #features .bento.in .ring{animation:fbrr 2.4s ease-out infinite}
+  #features .bento.in .hd{animation:fbblink 1.6s ease-in-out infinite}
+
+  /* Discreet panda */
+  #features .sw{transform-origin:60px 7px}
+  #features .bento.in .sw{animation:fbswing 3.4s ease-in-out infinite alternate}
+  @keyframes fbswing{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
+  #features .bento.in .eye{animation:fbeb 4.5s infinite}
+  @keyframes fbeb{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
+
+  /* Battery */
+  #features .seg{fill:currentColor;stroke:none}
+  #features .bento.in .seg{animation:fbch 4.2s ease-in-out infinite}
+  #features .seg:nth-child(4){animation-delay:.35s!important}
+  #features .seg:nth-child(5){animation-delay:.7s!important}
+  #features .seg:nth-child(6){animation-delay:1.05s!important}
+  @keyframes fbch{0%,4%{opacity:.12}20%,80%{opacity:1}96%,100%{opacity:.12}}
+
+  /* Instant alert */
+  #features .row{display:flex;align-items:center;gap:12px;height:74px;margin-bottom:16px}
+  #features .sos{flex:none;width:38px;height:38px;border-radius:50%;background:var(--fmr);display:grid;place-items:center;font-size:10px;font-weight:800;color:#fff}
+  #features .trk{position:relative;flex:1;height:2px;background:var(--fline)}
+  #features .trk i{position:absolute;left:0;top:-4px;width:10px;height:10px;border-radius:50%;background:var(--fpk);opacity:0}
+  #features .bento.in .trk i{animation:fbgo 5s cubic-bezier(.6,0,.3,1) infinite}
+  @keyframes fbgo{0%{left:0;opacity:0}4%{opacity:1}34%{left:calc(100% - 10px);opacity:1}38%,100%{left:calc(100% - 10px);opacity:0}}
+  #features .msg{flex:none;padding:8px 13px;border:1px solid var(--fpk);border-radius:12px 12px 12px 3px;font-size:12px;font-weight:600;color:var(--fpk)}
+  #features .bento.in .msg{animation:fbpop 5s ease infinite}
+  @keyframes fbpop{0%,34%{transform:scale(.6);opacity:0}42%{transform:scale(1.08);opacity:1}48%,86%{transform:scale(1);opacity:1}100%{opacity:0}}
+
+  /* Keypad phone */
+  #features .ph{transform-origin:50% 60%;transform-box:fill-box}
+  #features .bento.in .ph{animation:fbbuzz 4s infinite}
+  @keyframes fbbuzz{0%,80%,100%{transform:none}82%,86%,90%{transform:translateX(-2px) rotate(-2deg)}84%,88%,92%{transform:translateX(2px) rotate(2deg)}}
+  #features .ln{opacity:.1}
+  #features .bento.in .ln{animation:fbln 4s infinite}
+  #features .ln:nth-of-type(2){animation-delay:.25s!important}
+  @keyframes fbln{0%,20%{opacity:.1}35%,90%{opacity:1}100%{opacity:.1}}
+
+  /* SIM pills */
+  #features .pills{display:grid;grid-template-columns:1fr 1fr;gap:8px;height:74px;margin-bottom:16px;align-content:center}
+  #features .pills span{padding:8px 0;text-align:center;border:1px solid var(--fline);border-radius:9px;font-size:12px;font-weight:600;color:var(--fmu)}
+  #features .bento.in .pills span{animation:fbhl 4s infinite}
+  #features .pills span:nth-child(2){animation-delay:1s!important}
+  #features .pills span:nth-child(3){animation-delay:2s!important}
+  #features .pills span:nth-child(4){animation-delay:3s!important}
+  #features .pills .weak{border-style:dashed}
+  @keyframes fbhl{0%,22%{border-color:var(--fpk);color:var(--white);background:rgba(255,179,184,.1)}28%,100%{border-color:var(--fline);color:var(--fmu);background:none}}
+
+  /* Responsive */
+  @media(max-width:860px){
+    #features .bento{grid-template-columns:repeat(2,1fr)}
+    #features .big{grid-row:auto;min-height:340px}
+  }
+  @media(max-width:520px){
+    #features .bento{grid-template-columns:1fr}
+    #features .big,#features .wide{grid-column:auto}
+    #features .big{min-height:360px}
+    #features .rad{width:260px;height:260px}
+    #features .wide .msg{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){
+    #features *,#features *::before{animation:none!important;transition:none!important}
+    #features .dr path{stroke-dashoffset:0}
+    #features .trk i{opacity:1;left:calc(100% - 10px)}
+  }
+  </style>
+
   <div class="section-inner">
     <div class="section-label reveal">Features</div>
     <h2 class="section-title reveal">Built for<br><em>real life.</em></h2>
     <p class="section-sub reveal" style="margin-bottom:48px;">The safety gadget for college girls, working women and solo travellers. Keep it on your keys and it goes wherever you go.</p>
-    <div class="features-grid">
-      <div class="feature-item reveal"><div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div><div class="feature-title">Live GPS</div><div class="feature-desc">Real-time location sent as a Google Maps link directly to your trusted contact via SMS.</div></div>
-      <div class="feature-item reveal"><div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a12 12 0 0 1 12 12"/><path d="M4 4a19 19 0 0 1 19 19"/><circle cx="4.5" cy="18.5" r="1.8"/></svg></div><div class="feature-title">No Internet</div><div class="feature-desc">Works on GSM network. No WiFi, no smartphone, no app, just press and go.</div></div>
-      <div class="feature-item reveal"><div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5L12 4l8 7.5"/><path d="M6 10v10h12V10"/></svg></div><div class="feature-title">Indoor Ready</div><div class="feature-desc">Cell tower triangulation ensures location works even when GPS signal is weak indoors.</div></div>
-      <div class="feature-item reveal"><div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.6"/><circle cx="18" cy="6" r="2.6"/><circle cx="12" cy="13" r="8"/><circle cx="8.3" cy="12" r="1.6"/><circle cx="15.7" cy="12" r="1.6"/><path d="M9.5 16.5c.8.9 1.7 1.3 2.5 1.3s1.7-.4 2.5-1.3"/></svg></div><div class="feature-title">Discreet Design</div><div class="feature-desc">Looks like a cute panda bag patch. Nobody knows it's a safety device, that's the point.</div></div>
-      <div class="feature-item reveal"><div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="17" height="10" rx="2"/><path d="M21 10v4"/><path d="M12 9.5L9 13h3l-2 2.5"/></svg></div><div class="feature-title">Long Battery</div><div class="feature-desc">2500mAh battery with up to 24 hours of standby. Charge it with any USB Type-C charger.</div></div>
-      <div class="feature-item reveal"><div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></div><div class="feature-title">Instant Alert</div><div class="feature-desc">SMS sent within seconds of pressing SOS. No delays, no loading screens.</div></div>
-      <div class="feature-item reveal"><div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div><div class="feature-title">Any Phone Receives</div><div class="feature-desc">Even a basic keypad phone can receive the SOS alert. No app on receiver's end.</div></div>
-      <div class="feature-item reveal"><div class="feature-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6M15 2v6"/><path d="M6 8h12v4a6 6 0 0 1-12 0z"/><path d="M12 18v4"/></svg></div><div class="feature-title">All SIMs Work</div><div class="feature-desc">Works with any 4G SIM. Airtel, Jio and Vi give the best signal, while BSNL can be weak in some areas.</div></div>
-    </div>
+    <div class="bento" id="bento"></div>
   </div>
 </section>
-
+<script>
+(function(){
+  var S=function(b){return '<svg class="v" viewBox="0 0 120 70" aria-hidden="true">'+b+'</svg>';};
+  var C=[
+    {c:'big',t:'Live GPS',d:'Real-time location sent as a Google Maps link directly to your trusted contact via SMS.',
+     x:'<div class="map"></div><svg class="rad" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="95"/><circle cx="100" cy="100" r="95"/><circle cx="100" cy="100" r="95"/><path class="pin" d="M100 100c-10-11-15-18-15-26a15 15 0 0 1 30 0c0 8-5 15-15 26zM100 70a4 4 0 1 0 0 8a4 4 0 1 0 0-8z" fill-rule="evenodd"/></svg><span class="chip"><i></i>12.9716° N, 77.5946° E</span>',v:''},
+    {t:'No Internet',d:'Works on GSM network. No WiFi, no smartphone, no app, just press and go.',
+     v:S('<g class="bars"><rect x="6" y="46" width="10" height="18" rx="2"/><rect x="24" y="36" width="10" height="28" rx="2"/><rect x="42" y="24" width="10" height="40" rx="2"/><rect x="60" y="10" width="10" height="54" rx="2"/></g><g class="mu"><path d="M84 30a24 24 0 0 1 32 0M90 38a15 15 0 0 1 20 0M96 46a6 6 0 0 1 8 0"/></g><g class="dr"><path pathLength="1" d="M82 58L118 16"/></g>')},
+    {t:'Indoor Ready',d:'Cell tower triangulation ensures location works even when GPS signal is weak indoors.',
+     v:S('<path d="M10 40L36 16l26 24M16 36v26h40V36"/><circle class="fl hd" cx="36" cy="50" r="4"/><path d="M104 64l5-34 5 34M109 30v-8"/><circle class="ring" cx="109" cy="20" r="9"/><path class="ping" d="M104 24Q80 20 62 40"/>')},
+    {t:'Discreet Design',d:'Looks like a cute panda keychain. Nobody knows it’s a safety device, that’s the point.',
+     v:S('<g class="sw"><circle cx="60" cy="7" r="5"/><path d="M60 12v14"/><circle cx="43" cy="30" r="6"/><circle cx="77" cy="30" r="6"/><circle cx="60" cy="47" r="19"/><ellipse class="patch" cx="52" cy="44" rx="5" ry="6.5"/><ellipse class="patch" cx="68" cy="44" rx="5" ry="6.5"/><circle class="eye" cx="52" cy="44" r="2.2"/><circle class="eye" cx="68" cy="44" r="2.2"/><path class="fl" d="M57 52q3-2 6 0q-1 3-3 3q-2 0-3-3z"/></g>')},
+    {t:'Long Battery',d:'2500mAh battery with up to 24 hours of standby. Charge it with any USB Type-C charger.',
+     v:S('<rect x="10" y="18" width="88" height="34" rx="8"/><path d="M102 29v12"/><rect class="seg" x="17" y="25" width="16" height="20" rx="3"/><rect class="seg" x="36" y="25" width="16" height="20" rx="3"/><rect class="seg" x="55" y="25" width="16" height="20" rx="3"/><rect class="seg" x="74" y="25" width="16" height="20" rx="3"/>')},
+    {c:'wide',t:'Instant Alert',d:'SMS sent within seconds of pressing SOS. No delays, no loading screens.',
+     v:'<div class="row"><span class="sos">SOS</span><div class="trk"><i></i></div><span class="msg">Location sent</span></div>'},
+    {t:'Any Phone Receives',d:'Even a basic keypad phone can receive the SOS alert. No app on receiver’s end.',
+     v:S('<g class="ph"><rect x="42" y="3" width="36" height="64" rx="7"/><rect x="48" y="9" width="24" height="20" rx="3"/><path class="ln" d="M52 16h16"/><path class="ln" d="M52 22h10"/><circle class="fl" cx="52" cy="40" r="1.6"/><circle class="fl" cx="60" cy="40" r="1.6"/><circle class="fl" cx="68" cy="40" r="1.6"/><circle class="fl" cx="52" cy="47" r="1.6"/><circle class="fl" cx="60" cy="47" r="1.6"/><circle class="fl" cx="68" cy="47" r="1.6"/><circle class="fl" cx="52" cy="54" r="1.6"/><circle class="fl" cx="60" cy="54" r="1.6"/><circle class="fl" cx="68" cy="54" r="1.6"/></g>')},
+    {t:'All SIMs Work',d:'Works with any 4G SIM. Airtel, Jio and Vi give the best signal, while BSNL can be weak in some areas.',
+     v:'<div class="pills"><span>Airtel</span><span>Jio</span><span>Vi</span><span class="weak">BSNL</span></div>'}
+  ];
+  var g=document.getElementById('bento');
+  g.innerHTML=C.map(function(f,i){
+    return '<article class="bc'+(f.c?' '+f.c:'')+'" style="--i:'+i+'">'+(f.x||'')+f.v+'<h3>'+f.t+'</h3><p>'+f.d+'</p></article>';
+  }).join('');
+  g.addEventListener('pointermove',function(e){
+    var b=e.target.closest('.bc'); if(!b) return;
+    var r=b.getBoundingClientRect();
+    b.style.setProperty('--mx',(e.clientX-r.left)+'px');
+    b.style.setProperty('--my',(e.clientY-r.top)+'px');
+  });
+  new IntersectionObserver(function(es,io){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.15}).observe(g);
+})();
+</script>
+  
 <!-- WHY I.TRAXE IS DIFFERENT -->
 <section class="section why-section" id="why">
   <div class="section-inner">
