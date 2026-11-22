@@ -2857,7 +2857,95 @@ var SUGGESTIONS = ["What is I.TRAXE?", "How does it work?", "Price?", "How do I 
     #phase2 .phase2-list li { font-size: 13px; }
   }
 </style>
+<!-- KEYCHAIN EDITION (coming soon) -->
+<section class="section" id="keychain" style="padding-top:0;padding-bottom:40px;">
+  <style>
+    .kc-wrap{position:relative;max-width:820px;margin:0 auto;border-radius:20px;padding:1px;background:linear-gradient(120deg,rgba(255,179,184,.15),rgba(128,0,0,.7),rgba(255,179,184,.15));background-size:200% 200%;animation:kcShimmer 8s ease-in-out infinite}
+    @keyframes kcShimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+    .kc-box{padding:30px;border-radius:19px;background:linear-gradient(180deg,#171214,#0f0c0d);text-align:left;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+    .kc-wrap:hover .kc-box{transform:translateY(-4px)}
+    .kc-top{display:flex;align-items:center;gap:18px;margin-bottom:16px}
+    .kc-icon{position:relative;flex:none;width:64px;height:64px;display:grid;place-items:center}
+    .kc-icon span{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(255,179,184,.5);animation:kcPulse 2.8s ease-out infinite}
+    .kc-icon span:nth-child(2){animation-delay:1.4s}
+    @keyframes kcPulse{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.5);opacity:0}}
+    .kc-icon i{position:relative;width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#c2262e,#5d070c);display:grid;place-items:center;font:700 10px var(--font-body);color:#fff;letter-spacing:.05em;font-style:normal}
+    .kc-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--pink);border-radius:999px;color:var(--pink);font-size:11px;letter-spacing:.15em;margin-bottom:8px}
+    .kc-badge b{width:6px;height:6px;border-radius:50%;background:var(--pink);animation:kcBlink 1.8s ease-in-out infinite}
+    @keyframes kcBlink{50%{opacity:.25}}
+    .kc-title{font-family:var(--font-display);font-size:26px;font-weight:700;color:var(--white);line-height:1.2}
+    .kc-sub{font-size:14px;color:rgba(244,239,236,.7);line-height:1.6;margin-bottom:22px}
+    .kc-table-wrap{overflow-x:auto;border:1px solid rgba(255,255,255,.08);border-radius:12px}
+    .kc-table{width:100%;min-width:520px;border-collapse:collapse;font-size:13px}
+    .kc-table th,.kc-table td{padding:12px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,.08);color:rgba(244,239,236,.85)}
+    .kc-table thead th{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--white);background:#0c0a0b}
+    .kc-table tbody th{font-weight:500;color:var(--gray-5);width:28%}
+    .kc-table tr:last-child th,.kc-table tr:last-child td{border-bottom:none}
+    .kc-table .kc-hi{background:rgba(128,0,0,.22);color:var(--white);font-weight:600}
+    .kc-table thead .kc-hi{background:#800000;color:#fff}
+    .kc-row{opacity:0;transform:translateX(-8px);transition:opacity .6s ease,transform .6s ease}
+    .kc-wrap.in .kc-row{opacity:1;transform:none}
+    .kc-wrap.in .kc-row:nth-child(2){transition-delay:.1s}
+    .kc-wrap.in .kc-row:nth-child(3){transition-delay:.18s}
+    .kc-wrap.in .kc-row:nth-child(4){transition-delay:.26s}
+    .kc-wrap.in .kc-row:nth-child(5){transition-delay:.34s}
+    .kc-wrap.in .kc-row:nth-child(6){transition-delay:.42s}
+    .kc-price-row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px;margin-top:22px}
+    .kc-price{font-size:30px;font-weight:700;color:var(--white)}
+    .kc-price small{font-size:13px;color:var(--gray-5);font-weight:400;margin-left:6px}
+    .kc-note{font-size:12px;color:rgba(244,239,236,.5);line-height:1.6;margin-top:10px}
+    .kc-cta{display:block;width:100%;margin-top:20px;padding:16px;text-align:center;background:var(--white);color:var(--gray-1);border-radius:10px;text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:transform .3s ease,box-shadow .3s ease}
+    .kc-cta:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(255,179,184,.2)}
+    @media (max-width:640px){.kc-box{padding:22px 18px}.kc-title{font-size:22px}.kc-icon{width:54px;height:54px}}
+    @media (prefers-reduced-motion:reduce){.kc-wrap,.kc-icon span,.kc-badge b{animation:none}.kc-row{opacity:1;transform:none;transition:none}}
+  </style>
+  <div class="section-inner">
+    <div class="kc-wrap" id="kcWrap">
+      <div class="kc-box">
+        <div class="kc-top">
+          <div class="kc-icon"><span></span><span></span><i>SOS</i></div>
+          <div>
+            <span class="kc-badge"><b></b>COMING SOON</span>
+            <div class="kc-title">I.TRAXE Keychain + App</div>
+          </div>
+        </div>
+        <p class="kc-sub">A separate product from the bag patch. A small keychain-sized device that works with a companion app, with no SIM card needed. Press SOS on the device, or send the SOS from the app if you don't have the device with you. Your trusted contact gets a live location link.</p>
 
+        <div class="kc-table-wrap">
+          <table class="kc-table">
+            <thead>
+              <tr><th>Feature</th><th>Phase 1<br>Bag Patch</th><th class="kc-hi">Keychain + App</th><th>Phase 2</th></tr>
+            </thead>
+            <tbody>
+              <tr class="kc-row"><th>Status</th><td>Launching 20 Nov 2026</td><td class="kc-hi">Coming soon</td><td>Coming soon</td></tr>
+              <tr class="kc-row"><th>Price</th><td>₹3,499</td><td class="kc-hi">₹2,299</td><td>₹7,999 (indicative)</td></tr>
+              <tr class="kc-row"><th>Form</th><td>Panda bag patch</td><td class="kc-hi">Keychain, approx. 2 inch</td><td>TBA</td></tr>
+              <tr class="kc-row"><th>SIM card</th><td>Required (4G + SMS pack)</td><td class="kc-hi">Not required</td><td>Required</td></tr>
+              <tr class="kc-row"><th>Works with app</th><td>No</td><td class="kc-hi">Yes, SOS can be sent from the app</td><td>TBA</td></tr>
+              <tr class="kc-row"><th>Extra features</th><td>GPS + GSM, one press SOS</td><td class="kc-hi">Device + app, live location link</td><td>4K camera, voice recorder, premium features</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="kc-price-row">
+          <div class="kc-price">₹2,299<small>Keychain + App · one-time</small></div>
+        </div>
+        <p class="kc-note">Final specs, battery life and app features will be confirmed at launch.</p>
+        <a class="kc-cta" href="https://wa.me/918073067935?text=Hi%20I.TRAXE!%20I%27d%20like%20to%20join%20the%20waitlist%20for%20the%20Keychain%20%2B%20App%20edition." target="_blank" rel="noopener">Join Waitlist</a>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var w=document.getElementById('kcWrap');
+  if(!w) return;
+  new IntersectionObserver(function(es,io){
+    es.forEach(function(e){ if(e.isIntersecting){ w.classList.add('in'); io.unobserve(w); } });
+  },{threshold:.2}).observe(w);
+})();
+</script>
+  
 <section id="phase2">
   <div class="section-inner">
     <div class="section-label reveal" style="justify-content:center;">Phase 2</div>
